@@ -4,29 +4,177 @@
 
 import React, { useState, useMemo, useEffect } from 'react';
 import { useAflFixture } from '@/hooks/useAflFixture';
-import { MatchCard } from '@/components/afl/MatchCard';
+import { MatchCard } from '@/components/custom/afl/MatchCard';
 import { useHeaderStore } from '@/lib/store/header-store';
 import { useLayoutStore } from '@/lib/store/layout-store';
 import { useSearch } from '@/hooks/use-search';
 import { TableToolbar } from '@/components/custom/table-toolbar';
-import { Select } from '@/components/UI/select/select';
 import { Switch } from '@/components/UI/switch';
 import {
   usePreferencesStore,
   usePreferencesActions,
 } from '@/lib/store/preferences-store';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Loader2 } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
 import { Button } from '@/components/UI/Button';
-import { Filter, Settings2, X } from 'lucide-react';
+import { Filter, X } from 'lucide-react';
 import { WaterfallLayout } from '@/components/layout/waterfallLayout';
-import { MatchCardSkeleton } from '@/components/afl/MatchCardSkeleton';
+import { MatchCardSkeleton } from '@/components/custom/afl/MatchCardSkeleton';
+import { DataTable } from '@/components/UI/table/data-table';
+import { ColumnDef } from '@tanstack/react-table';
+import type { AflMatch } from '@/types/afl';
+import { LayoutGrid, Table as TableIcon } from 'lucide-react';
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
+
+// Define columns for table view
+const columns: ColumnDef<AflMatch & { roundCode: string }>[] = [
+  {
+    accessorKey: 'roundCode',
+    header: 'Round',
+    cell: ({ row }) => (
+      <span className='inline-flex rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-bold tracking-wider text-primary'>
+        {row.original.roundCode}
+      </span>
+    ),
+  },
+  {
+    id: 'teams',
+    header: 'Match',
+    accessorFn: (row) => {
+      const home = row.squads?.home?.name || 'TBD';
+      const away = row.squads?.away?.name || 'TBD';
+      return `${home} vs ${away}`;
+    },
+    cell: ({ row }) => {
+      const home = row.original.squads?.home;
+      const away = row.original.squads?.away;
+      return (
+        <div className='flex items-center gap-2'>
+          <span className='font-bold text-ink-primary'>
+            {home?.name || 'TBD'}
+          </span>
+          <span className='text-xs text-ink-secondary'>vs</span>
+          <span className='font-bold text-ink-primary'>
+            {away?.name || 'TBD'}
+          </span>
+        </div>
+      );
+    },
+  },
+  {
+    id: 'score',
+    header: 'Score',
+    accessorFn: (row) => {
+      const homeScore = row.squads?.home?.score?.points ?? 0;
+      const awayScore = row.squads?.away?.score?.points ?? 0;
+      return homeScore + awayScore;
+    },
+    cell: ({ row }) => {
+      const home = row.original.squads?.home;
+      const away = row.original.squads?.away;
+      const isComplete = row.original.status?.code === 'COMP';
+
+      if (!isComplete) {
+        return <span className='text-xs text-ink-secondary'>-</span>;
+      }
+
+      const homeScore = home?.score?.points ?? 0;
+      const awayScore = away?.score?.points ?? 0;
+      const homeWin = homeScore > awayScore;
+      const awayWin = awayScore > homeScore;
+
+      return (
+        <div className='flex items-center gap-2 font-mono text-sm'>
+          <span className={cn('font-bold', homeWin && 'text-primary')}>
+            {homeScore}
+          </span>
+          <span className='text-ink-secondary'>-</span>
+          <span className={cn('font-bold', awayWin && 'text-primary')}>
+            {awayScore}
+          </span>
+        </div>
+      );
+    },
+  },
+  {
+    id: 'date',
+    header: 'Date & Time',
+    accessorFn: (row) => {
+      const date = row.date?.utcMatchStart;
+      return date ? dayjs(date).valueOf() : 0;
+    },
+    cell: ({ row }) => {
+      const date = row.original.date?.utcMatchStart;
+      const venue = row.original.venue;
+
+      if (!date) return <span className='text-xs text-ink-secondary'>TBD</span>;
+
+      const localTime =
+        venue?.timeZone ? dayjs(date).tz(venue.timeZone) : dayjs(date);
+
+      return (
+        <div className='flex flex-col gap-0.5'>
+          <span className='text-xs font-medium text-ink-primary'>
+            {localTime.format('ddd D MMM YYYY')}
+          </span>
+          <span className='text-[10px] text-ink-secondary'>
+            {localTime.format('h:mm A z')}
+          </span>
+        </div>
+      );
+    },
+  },
+  {
+    id: 'venue',
+    header: 'Venue',
+    accessorFn: (row) => row.venue?.name || 'TBD',
+    cell: ({ row }) => (
+      <span className='text-xs text-ink-secondary'>
+        {row.original.venue?.name || 'TBD'}
+      </span>
+    ),
+  },
+  {
+    id: 'status',
+    header: 'Status',
+    accessorFn: (row) => row.status?.name || 'Unknown',
+    cell: ({ row }) => {
+      const status = row.original.status;
+      const statusCode = status?.code || '';
+      const statusName = status?.name || 'Unknown';
+
+      const statusColors: Record<string, string> = {
+        COMP: 'bg-green-500/10 text-green-600 dark:text-green-400',
+        LIVE: 'bg-red-500/10 text-red-600 dark:text-red-400',
+        SCHD: 'bg-blue-500/10 text-blue-600 dark:text-blue-400',
+      };
+
+      return (
+        <span
+          className={cn(
+            'inline-flex rounded-full px-2 py-0.5 text-[10px] font-bold tracking-wider',
+            statusColors[statusCode] ||
+              'bg-gray-500/10 text-gray-600 dark:text-gray-400',
+          )}
+        >
+          {statusName}
+        </span>
+      );
+    },
+  },
+];
 
 export default function AflFixturePage() {
   const { allMatches, roundCodes, venues, teams, isLoading, isError, error } =
     useAflFixture();
+
+  const viewMode = usePreferencesStore((state) => state.viewMode);
+  const { setColumnSettings } = usePreferencesActions();
 
   const [selectedRounds, setSelectedRounds] = useState<string[]>([]);
   const [selectedVenues, setSelectedVenues] = useState<string[]>([]);
@@ -55,6 +203,16 @@ export default function AflFixturePage() {
   const columnSettings =
     usePreferencesStore((state) => state.columnSettings['afl-fixture']) || {};
   const columnVisibility = columnSettings.visibility || {};
+  const columnOrder = columnSettings.order || [];
+
+  // Initialize column order if empty
+  useEffect(() => {
+    if (columnOrder.length === 0) {
+      setColumnSettings('afl-fixture', {
+        order: columns.map((c) => c.id as string),
+      });
+    }
+  }, [columnOrder.length, setColumnSettings]);
 
   // Filter settings interface
   const handleFilterClick = () => {
@@ -175,17 +333,6 @@ export default function AflFixturePage() {
   // Derived filtered matches
   const filteredMatches = useMemo(() => {
     let result = allMatches;
-
-    if (debouncedSearch) {
-      const q = debouncedSearch.toLowerCase();
-      result = result.filter(
-        (m) =>
-          m.squads?.home?.name?.toLowerCase().includes(q) ||
-          m.squads?.away?.name?.toLowerCase().includes(q) ||
-          m.venue?.name?.toLowerCase().includes(q) ||
-          m.roundCode?.toLowerCase().includes(q),
-      );
-    }
 
     result = result.filter((m) => {
       const matchRound =
@@ -328,22 +475,47 @@ export default function AflFixturePage() {
 
       {/* Match Grid */}
       {filteredMatches.length > 0 ?
-        <WaterfallLayout minColumnWidth={350}>
-          {filteredMatches.map((match) => {
-            const homeScore = match.squads?.home?.score?.points ?? 0;
-            const awayScore = match.squads?.away?.score?.points ?? 0;
-            const scoreString = `${homeScore}:${awayScore}`;
-            const layout = scoreString.length > 5;
-            return (
-              <MatchCard
-                key={`${match.id || match.roundCode}`}
-                match={match}
-                visibility={columnVisibility}
-                layout={layout}
-              />
-            );
-          })}
-        </WaterfallLayout>
+        viewMode === 'table' ?
+          <DataTable
+            columns={columns}
+            data={filteredMatches}
+            hideToolbar={true}
+            enableSorting={true}
+            enableColumnVisibility={true}
+            columnVisibility={columnVisibility}
+            onColumnVisibilityChange={(updaterOrValue) => {
+              const newValue =
+                typeof updaterOrValue === 'function' ?
+                  updaterOrValue(columnVisibility)
+                : updaterOrValue;
+              setColumnSettings('afl-fixture', { visibility: newValue });
+            }}
+            columnOrder={columnOrder}
+            onColumnOrderChange={(updaterOrValue) => {
+              const newValue =
+                typeof updaterOrValue === 'function' ?
+                  updaterOrValue(columnOrder)
+                : updaterOrValue;
+              setColumnSettings('afl-fixture', { order: newValue });
+            }}
+          />
+        : <WaterfallLayout minColumnWidth={350}>
+            {filteredMatches.map((match) => {
+              const homeScore = match.squads?.home?.score?.points ?? 0;
+              const awayScore = match.squads?.away?.score?.points ?? 0;
+              const scoreString = `${homeScore}:${awayScore}`;
+              const layout = scoreString.length > 5;
+              return (
+                <MatchCard
+                  key={`${match.id || match.roundCode}`}
+                  match={match}
+                  visibility={columnVisibility}
+                  layout={layout}
+                />
+              );
+            })}
+          </WaterfallLayout>
+
       : <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -390,6 +562,9 @@ export default function AflFixturePage() {
 function AflViewSettings() {
   const { setColumnSettings } = usePreferencesActions();
   const { closeDrawer } = useLayoutStore((state) => state.actions);
+  const viewMode = usePreferencesStore((state) => state.viewMode);
+  const { setViewMode } = usePreferencesActions();
+
   const columnSettings =
     usePreferencesStore((state) => state.columnSettings['afl-fixture']) || {};
   const columnVisibility = columnSettings.visibility || {};
@@ -406,13 +581,44 @@ function AflViewSettings() {
         <div>
           <h2 className='text-lg font-bold text-primary'>View Settings</h2>
           <p className='text-sm text-ink-secondary'>
-            Customize column visibility and order.
+            Customize view mode and column visibility.
           </p>
         </div>
         <Button Icon={X} onClick={closeDrawer} variant='ghost' />
       </div>
 
       <div className='p-6 space-y-6'>
+        {/* View Mode Toggle */}
+        <div className='space-y-4'>
+          <h3 className='text-sm font-medium text-ink-primary'>View Mode</h3>
+          <div className='flex gap-2'>
+            <button
+              onClick={() => setViewMode('card')}
+              className={cn(
+                'flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-2xl text-sm font-bold transition-all',
+                viewMode === 'card' ?
+                  'bg-primary text-white shadow-sm ring-2 ring-primary/20'
+                : 'bg-black/5 text-ink-secondary hover:bg-black/10 dark:bg-white/5 dark:hover:bg-white/10',
+              )}
+            >
+              <LayoutGrid className='size-4' />
+              Cards
+            </button>
+            <button
+              onClick={() => setViewMode('table')}
+              className={cn(
+                'flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-2xl text-sm font-bold transition-all',
+                viewMode === 'table' ?
+                  'bg-primary text-white shadow-sm ring-2 ring-primary/20'
+                : 'bg-black/5 text-ink-secondary hover:bg-black/10 dark:bg-white/5 dark:hover:bg-white/10',
+              )}
+            >
+              <TableIcon className='size-4' />
+              Table
+            </button>
+          </div>
+        </div>
+
         <div className='space-y-4'>
           <h3 className='text-sm font-medium text-ink-primary'>
             Visible Columns

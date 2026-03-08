@@ -66,11 +66,11 @@ export function PageHeader({
                         </div>
                     </ScrollLayout.TopToLeft>
 
-                    <ScrollLayout.BtmToRight>
-
-                        {children}
-
-                    </ScrollLayout.BtmToRight>
+                    {children && (
+                        <ScrollLayout.BtmToRight>
+                            {children}
+                        </ScrollLayout.BtmToRight>
+                    )}
                 </ScrollLayout>
 
 

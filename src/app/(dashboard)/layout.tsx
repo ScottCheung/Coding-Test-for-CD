@@ -3,7 +3,6 @@
 'use client';
 
 import { Sidebar } from '@/components/layout/sidebar';
-import AuthGuard from '@/components/auth/auth-guard';
 import { GlobalDrawer } from '@/components/layout/global-drawer';
 import { PageHeader } from '@/components/layout/page-header';
 import { useHeaderStore } from '@/lib/store/header-store';
@@ -23,7 +22,6 @@ export default function DashboardLayout({
   const scrollContainerRef = React.useRef<HTMLElement>(null);
 
   return (
-    // <AuthGuard>
     <div className='flex h-screen w-screen flex-row overflow-hidden bg-background'>
       <Sidebar />
       <main
@@ -46,6 +44,5 @@ export default function DashboardLayout({
       </main>
       <GlobalDrawer />
     </div>
-    // </AuthGuard>
   );
 }

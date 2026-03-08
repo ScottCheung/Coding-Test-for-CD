@@ -9,19 +9,22 @@ interface HeaderState {
 }
 
 interface HeaderStore extends HeaderState {
-    setHeader: (config: HeaderState) => void
+    setHeader: (config: Partial<HeaderState> & { title: string }) => void
     resetHeader: () => void
 }
 
 const initialState: HeaderState = {
     title: '',
     description: undefined,
-    actions: null,
-    children: null,
+    actions: undefined,
+    children: undefined,
 }
 
 export const useHeaderStore = create<HeaderStore>((set) => ({
     ...initialState,
-    setHeader: (config) => set(config),
+    setHeader: (config) => set({
+        ...initialState,
+        ...config,
+    }),
     resetHeader: () => set(initialState),
 }))

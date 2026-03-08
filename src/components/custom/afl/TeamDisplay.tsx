@@ -4,7 +4,7 @@
 
 import React from 'react';
 import { cn } from '@/lib/utils';
-import { Small } from '../UI/text/typography';
+import { Small } from '@/components/UI/text/typography';
 
 interface TeamDisplayProps {
   code: string;
