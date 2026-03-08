@@ -12,17 +12,7 @@ interface Match {
   venue?: { name?: string };
 }
 
-interface Team {
-  id: string;
-  name: string;
-}
-
-interface Venue {
-  id: string;
-  name: string;
-}
-
-export function useAflStats(allMatches: Match[], teams: Team[], venues: Venue[]) {
+export function useAflStats(allMatches: Match[], teams: string[], venues: string[]) {
   const stats = useMemo(() => {
     if (!allMatches || allMatches.length === 0) {
       return {
