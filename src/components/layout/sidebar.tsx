@@ -19,6 +19,12 @@ import {
   List,
   Settings2Icon,
   Trophy,
+  Menu,
+  X,
+  AlignRight,
+  ArrowRight,
+  AlignRightIcon,
+  ArrowRightIcon,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { ListGridToggle } from '@/components/list-grid-toggle';
@@ -54,6 +60,7 @@ export function Sidebar() {
   const { user, fetchMe, logout } = useAuthStore();
   const isCollapsed = useLayoutStore((state) => state.isSidebarCollapsed);
   const { toggleSidebar } = useLayoutStore((state) => state.actions);
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
 
   const [mounted, setMounted] = useState(false);
 
@@ -63,6 +70,23 @@ export function Sidebar() {
       fetchMe();
     }
   }, [user, fetchMe]);
+
+  // Close mobile menu when route changes
+  useEffect(() => {
+    setIsMobileOpen(false);
+  }, [pathname]);
+
+  // Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    if (isMobileOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isMobileOpen]);
 
   const springTransition = {
     type: 'spring',
@@ -82,17 +106,8 @@ export function Sidebar() {
     exit: { opacity: 0, x: -10, width: 0, transition: { duration: 0.1 } },
   };
 
-  return (
-    <motion.aside
-      layout
-      initial={{ width: 288 }}
-      animate={{ width: isCollapsed ? 80 : 288 }}
-      transition={springTransition}
-      className={cn(
-        'top-0 left-0 z-10 fixed md:sticky h-screen flex-col justify-between bg-panel lg:flex overflow-hidden z-50',
-        isCollapsed ? 'p-4' : 'p-sidebar',
-      )}
-    >
+  const SidebarContent = () => (
+    <>
       <div className='flex flex-col gap-10'>
         {/* Brand */}
         <div
@@ -132,10 +147,8 @@ export function Sidebar() {
         </div>
 
         {/* Navigation */}
-
         <nav className='flex flex-col gap-1'>
           <Stagger className='flex flex-col gap-1'>
-            {' '}
             {navigation.map((item) => {
               const isActive = pathname === item.href;
               return (
@@ -272,6 +285,70 @@ export function Sidebar() {
           </AnimatePresence>
         </div>
       </div>
-    </motion.aside>
+    </>
+  );
+
+  return (
+    <>
+      {/* Mobile Menu Button */}
+      <button
+        onClick={() => setIsMobileOpen(true)}
+        className='fixed top-1/2 -left-4 z-50 flex lg:hidden items-center justify-center size-12 rounded-xl bg-panel border border-black/5 dark:border-white/5 shadow-lg text-ink-primary hover:bg-primary hover:text-white transition-all'
+        aria-label='Open menu'
+      >
+        <ArrowRightIcon className='size-6' />
+      </button>
+
+      {/* Mobile Overlay */}
+      <AnimatePresence>
+        {isMobileOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className='fixed inset-0 z-50 bg-black/50 backdrop-blur-sm lg:hidden'
+            onClick={() => setIsMobileOpen(false)}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Mobile Sidebar */}
+      <AnimatePresence>
+        {isMobileOpen && (
+          <motion.aside
+            initial={{ x: -288 }}
+            animate={{ x: 0 }}
+            exit={{ x: -288 }}
+            transition={{ type: 'spring', stiffness: 400, damping: 40 }}
+            className='fixed top-0 left-0 z-50 h-screen w-72 flex-col justify-between bg-panel p-sidebar lg:hidden shadow-2xl'
+          >
+            {/* Close Button */}
+            <button
+              onClick={() => setIsMobileOpen(false)}
+              className='absolute top-4 right-4 flex items-center justify-center size-8 rounded-lg text-ink-secondary hover:bg-background transition-colors'
+              aria-label='Close menu'
+            >
+              <X className='size-5' />
+            </button>
+            <SidebarContent />
+          </motion.aside>
+        )}
+      </AnimatePresence>
+
+      {/* Desktop Sidebar */}
+      <motion.aside
+        layout
+        initial={{ width: 288 }}
+        animate={{ width: isCollapsed ? 80 : 288 }}
+        transition={springTransition}
+        className={cn(
+          'top-0 left-0 z-10 sticky h-screen flex-col justify-between bg-panel hidden lg:flex overflow-hidden',
+          isCollapsed ? 'p-4' : 'p-sidebar',
+        )}
+      >
+        <SidebarContent />
+      </motion.aside>
+    </>
   );
 }

@@ -28,9 +28,9 @@ export default function DashboardLayout({
       <Sidebar />
       <main
         ref={scrollContainerRef}
-        className='flex-1 overflow-y-auto overflow-x-hidden relative'
+        className='flex-1 overflow-y-auto overflow-x-hidden relative transition-all'
       >
-        <div>
+        <div className=''>
           {title && (
             <PageHeader
               title={title}
@@ -41,7 +41,7 @@ export default function DashboardLayout({
               {headerChildren}
             </PageHeader>
           )}
-          <div className='mt-18 p-page min-h-screen'>{children}</div>
+          <div className='mt-18 p-page min-h-screen '>{children}</div>
         </div>
       </main>
       <GlobalDrawer />

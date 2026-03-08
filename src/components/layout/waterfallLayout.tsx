@@ -10,6 +10,7 @@ export interface WaterfallLayoutProps {
     minColumnWidth?: number | { sm?: number; md?: number; lg?: number; xl?: number };
     padding?: boolean;
     itemScale?: number;
+    disableAnimation?: boolean;
 }
 
 export const WaterfallLayout: React.FC<WaterfallLayoutProps> = ({
@@ -20,6 +21,7 @@ export const WaterfallLayout: React.FC<WaterfallLayoutProps> = ({
     minColumnWidth = { sm: 250, md: 250, lg: 280, xl: 300 },
     padding = false,
     itemScale = 1,
+    disableAnimation = false,
 }) => {
     const containerRef = useRef<HTMLDivElement>(null);
     const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -87,7 +89,11 @@ export const WaterfallLayout: React.FC<WaterfallLayoutProps> = ({
             item.style.left = '0'; // 重置 left
             // Apply proper transition here to ensure it's set even if re-renders happened differently
             // Add width to transition to smooth out scale mode changes
-            item.style.transition = 'transform 1.2s cubic-bezier(0.22, 1.1, 0.36, 1), width 1.2s cubic-bezier(0.22, 1.1, 0.36, 1), opacity 1.2s ease';
+            if (!disableAnimation) {
+                item.style.transition = 'transform 1.2s cubic-bezier(0.22, 1.1, 0.36, 1), width 1.2s cubic-bezier(0.22, 1.1, 0.36, 1), opacity 1.2s ease';
+            } else {
+                item.style.transition = 'none';
+            }
 
             // 此时 item 已经有了宽度，读取高度 (Layout Thrashing 依然存在但被限制在必要的范围内)
             // 计算由于缩放而实际占用的高度
@@ -102,7 +108,7 @@ export const WaterfallLayout: React.FC<WaterfallLayoutProps> = ({
         const maxContentHeight = Math.max(...columnHeights) + (padding ? numericGap : 0);
         setContainerHeight(maxContentHeight);
 
-    }, [getColumnConfig, padding, itemScale]);
+    }, [getColumnConfig, padding, itemScale, disableAnimation]);
 
     // 监听 Resize 和 Children 变化
     useEffect(() => {
@@ -158,7 +164,7 @@ export const WaterfallLayout: React.FC<WaterfallLayoutProps> = ({
             className={cn('w-full relative', className)}
             style={{
                 height: containerHeight,
-                transition: 'height 1.2s cubic-bezier(0.22, 1.05, 0.36, 1)'
+                transition: disableAnimation ? 'none' : 'height 1.2s cubic-bezier(0.22, 1.05, 0.36, 1)'
             }}
         >
             {React.Children.map(children, (child, index) => {
@@ -166,22 +172,28 @@ export const WaterfallLayout: React.FC<WaterfallLayoutProps> = ({
                     <div
                         ref={(el) => { itemRefs.current[index] = el }}
                         className={cn('absolute relative left-0 top-0', itemClassName)}>
-                        <motion.div
-                            initial={{ opacity: 0, scale: 0.95 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ duration: 1.2, delay: 0.44 + 0.04 * (index % 30), ease: [0.22, 1.1, 0.36, 1] }}
-                            className='z-10
-                            '
-                        >
-                            {child}
-                        </motion.div>
-                        <motion.div
-                            initial={{ opacity: 1, scale: 1 }}
-                            animate={{ opacity: 0, scale: 0.95 }}
-                            transition={{ duration: 3, delay: 0.44 + 0.04 * (index % 30), ease: [0.22, 1.1, 0.36, 1] }}
-                            className='absolute top-0 left-0 w-full h-full rounded-card bg-panel -z-10'
-                        > </motion.div>
-
+                        {disableAnimation ? (
+                            <div className='z-10'>
+                                {child}
+                            </div>
+                        ) : (
+                            <>
+                                <motion.div
+                                    initial={{ opacity: 0, scale: 0.95 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    transition={{ duration: 1.2, delay: 0.44 + 0.04 * (index % 30), ease: [0.22, 1.1, 0.36, 1] }}
+                                    className='z-10'
+                                >
+                                    {child}
+                                </motion.div>
+                                <motion.div
+                                    initial={{ opacity: 1, scale: 1 }}
+                                    animate={{ opacity: 0, scale: 0.95 }}
+                                    transition={{ duration: 3, delay: 0.44 + 0.04 * (index % 30), ease: [0.22, 1.1, 0.36, 1] }}
+                                    className='absolute top-0 left-0 w-full h-full rounded-card bg-panel -z-10'
+                                />
+                            </>
+                        )}
                     </div>
                 );
             })}

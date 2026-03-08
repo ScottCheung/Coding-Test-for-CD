@@ -20,14 +20,23 @@ import { notify } from '@/lib/notifications';
 import { ColumnDef } from '@tanstack/react-table';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/UI/Button';
-import { Filter, X } from 'lucide-react';
+import {
+  ArrowRight,
+  ChevronRight,
+  Filter,
+  Icon,
+  MoveRight,
+  X,
+} from 'lucide-react';
 import teamsData from './teams.json'; // Importing local JSON data
 import CardWithNorth from '@/components/UI/card/CardWithNorth';
+import { IconBox } from '@/components/UI/icon/box';
 
 type Team = {
   code: string;
   name: string;
   description: string;
+  website: string;
 };
 
 function TeamLogo({ code, name }: { code: string; name: string }) {
@@ -88,7 +97,7 @@ export default function TeamsPage() {
   } = searchHook;
 
   const [sortConfig, setSortConfig] = React.useState<{
-    key: keyof Team;
+    key: 'name' | 'code';
     direction: 'asc' | 'desc';
   } | null>(null);
 
@@ -329,40 +338,51 @@ export default function TeamsPage() {
           // Grid/Waterfall view
         : <WaterfallLayout gap={30}>
             {filteredTeams.map((team) => (
-              <CardWithNorth
-                title={columnVisibility['name'] !== false ? team.name : null}
+              <a
+                key={team.code}
+                href={team.website}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block transition-transform hover:scale-[1.02]"
               >
-                <div className='relative flex items-center h-full gap-2 overflow-visible'>
-                  <p
-                    className={cn(
-                      'text-xs text-ink-secondary text-left invisible h-0',
-                      columnVisibility['description'] !== false &&
-                        'visible h-full',
-                    )}
-                  >
-                    {team.description}
-                  </p>
-                  <div className=' flex flex-col items-center h-full gap-3 overflow-visible'>
-                    {columnVisibility['code'] !== false && (
-                      <div
-                        className={cn(
-                          'relative block ',
-                          columnVisibility['description'] !== false ?
-                            '-mt-[60px] md:-mt-[100px] lg:-mt-[120px]  w-[70px]'
-                          : '-mt-[60px] md:-mt-[70px] lg:-mt-[70px] w-[80px]',
-                        )}
-                      >
-                        <TeamLogo code={team.code} name={team.name} />
-                      </div>
-                    )}
-                    {columnVisibility['code'] !== false && (
-                      <span className='inline-flex rounded-full bg-primary/10 px-2.5 py-0.5 text-[10px] font-bold tracking-wider text-primary'>
-                        {team.code}
-                      </span>
-                    )}
+                <CardWithNorth
+                  title={columnVisibility['name'] !== false ? team.name : null}
+                >
+                  <div className='relative flex items-center h-full gap-2 overflow-visible'>
+                    <p
+                      className={cn(
+                        'text-xs text-ink-secondary line-clamp-4 text-left invisible h-0',
+                        columnVisibility['description'] !== false &&
+                          'visible h-full',
+                      )}
+                    >
+                      {team.description}
+                    </p>
+                    <div className=' flex flex-col items-center h-full gap-3 overflow-visible'>
+                      {columnVisibility['code'] !== false && (
+                        <div
+                          className={cn(
+                            'relative block ',
+                            columnVisibility['description'] !== false ?
+                              '-mt-[60px] md:-mt-[100px] lg:-mt-[100px]  w-[70px]'
+                            : '-mt-[60px] md:-mt-[70px] lg:-mt-[70px] w-[80px]',
+                          )}
+                        >
+                          <TeamLogo code={team.code} name={team.name} />
+                        </div>
+                      )}
+                      {columnVisibility['code'] !== false && (
+                        <span className='inline-flex rounded-full bg-primary/10 px-2.5 py-0.5 text-[10px] font-bold tracking-wider text-primary'>
+                          {team.code}
+                        </span>
+                      )}
+                    </div>
                   </div>
-                </div>
-              </CardWithNorth>
+                  <IconBox className='absolute opacity-0 group-hover:opacity-100 right-5 bottom-5'>
+                    <ChevronRight size={17} />
+                  </IconBox>
+                </CardWithNorth>
+              </a>
             ))}
             {filteredTeams.length === 0 && (
               <p className='text-center text-sm text-ink-secondary col-span-full py-10'>

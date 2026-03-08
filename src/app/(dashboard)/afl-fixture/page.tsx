@@ -22,6 +22,7 @@ import dayjs from 'dayjs';
 import { Button } from '@/components/UI/Button';
 import { Filter, Settings2, X } from 'lucide-react';
 import { WaterfallLayout } from '@/components/layout/waterfallLayout';
+import { MatchCardSkeleton } from '@/components/afl/MatchCardSkeleton';
 
 export default function AflFixturePage() {
   const { allMatches, roundCodes, venues, teams, isLoading, isError, error } =
@@ -124,8 +125,9 @@ export default function AflFixturePage() {
 
   // Update header title cleanly
   useEffect(() => {
-    const activeFiltersCount = selectedRounds.length + selectedVenues.length + selectedTeams.length;
-    
+    const activeFiltersCount =
+      selectedRounds.length + selectedVenues.length + selectedTeams.length;
+
     useHeaderStore.getState().setHeader({
       title: 'AFL Fixture',
       description:
@@ -186,8 +188,11 @@ export default function AflFixturePage() {
     }
 
     result = result.filter((m) => {
-      const matchRound = selectedRounds.length === 0 || selectedRounds.includes(m.roundCode);
-      const matchVenue = selectedVenues.length === 0 || selectedVenues.includes(m.venue?.name || '');
+      const matchRound =
+        selectedRounds.length === 0 || selectedRounds.includes(m.roundCode);
+      const matchVenue =
+        selectedVenues.length === 0 ||
+        selectedVenues.includes(m.venue?.name || '');
       const matchTeam =
         selectedTeams.length === 0 ||
         selectedTeams.includes(m.squads?.home?.name || '') ||
@@ -228,12 +233,21 @@ export default function AflFixturePage() {
     sortConfig,
   ]);
 
-  // Loading state
+  // Loading state with skeleton
   if (isLoading) {
     return (
-      <div className='flex min-h-[50vh] flex-col items-center justify-center gap-4 text-ink-secondary'>
-        <Loader2 className='size-8 animate-spin text-primary' />
-        <p>Loading fixture data...</p>
+      <div className='flex flex-col gap-6 -mt-2'>
+        {/* Results Header Skeleton */}
+        <div className='flex items-center justify-between'>
+          <div className='h-5 w-48 bg-black/5 dark:bg-white/5 rounded animate-pulse' />
+        </div>
+
+        {/* Skeleton Grid */}
+        <WaterfallLayout minColumnWidth={350} disableAnimation>
+          {Array.from({ length: 12 }).map((_, i) => (
+            <MatchCardSkeleton key={i} layout={i % 3 === 0} />
+          ))}
+        </WaterfallLayout>
       </div>
     );
   }
@@ -277,19 +291,28 @@ export default function AflFixturePage() {
             {filteredMatches.length}
           </span>{' '}
           of {allMatches.length} matches
-          {(selectedRounds.length > 0 || selectedVenues.length > 0 || selectedTeams.length > 0) && (
+          {(selectedRounds.length > 0 ||
+            selectedVenues.length > 0 ||
+            selectedTeams.length > 0) && (
             <span className='ml-2 text-primary'>
               (
-              {selectedRounds.length > 0 && `${selectedRounds.length} round${selectedRounds.length > 1 ? 's' : ''}`}
-              {selectedRounds.length > 0 && (selectedVenues.length > 0 || selectedTeams.length > 0) && ', '}
-              {selectedVenues.length > 0 && `${selectedVenues.length} venue${selectedVenues.length > 1 ? 's' : ''}`}
+              {selectedRounds.length > 0 &&
+                `${selectedRounds.length} round${selectedRounds.length > 1 ? 's' : ''}`}
+              {selectedRounds.length > 0 &&
+                (selectedVenues.length > 0 || selectedTeams.length > 0) &&
+                ', '}
+              {selectedVenues.length > 0 &&
+                `${selectedVenues.length} venue${selectedVenues.length > 1 ? 's' : ''}`}
               {selectedVenues.length > 0 && selectedTeams.length > 0 && ', '}
-              {selectedTeams.length > 0 && `${selectedTeams.length} team${selectedTeams.length > 1 ? 's' : ''}`}
+              {selectedTeams.length > 0 &&
+                `${selectedTeams.length} team${selectedTeams.length > 1 ? 's' : ''}`}
               )
             </span>
           )}
         </p>
-        {(selectedRounds.length > 0 || selectedVenues.length > 0 || selectedTeams.length > 0) && (
+        {(selectedRounds.length > 0 ||
+          selectedVenues.length > 0 ||
+          selectedTeams.length > 0) && (
           <button
             onClick={() => {
               setSelectedRounds([]);
@@ -469,7 +492,12 @@ function AflFilterSort({
   onClose,
 }: {
   sortConfig: { key: 'date' | 'score'; direction: 'asc' | 'desc' } | null;
-  setSortConfig: React.Dispatch<React.SetStateAction<{ key: 'date' | 'score'; direction: 'asc' | 'desc' } | null>>;
+  setSortConfig: React.Dispatch<
+    React.SetStateAction<{
+      key: 'date' | 'score';
+      direction: 'asc' | 'desc';
+    } | null>
+  >;
   selectedRounds: string[];
   setSelectedRounds: React.Dispatch<React.SetStateAction<string[]>>;
   selectedVenues: string[];
@@ -484,8 +512,8 @@ function AflFilterSort({
   const { allMatches } = useAflFixture();
 
   const toggleItem = (items: string[], item: string) => {
-    return items.includes(item) 
-      ? items.filter(i => i !== item)
+    return items.includes(item) ?
+        items.filter((i) => i !== item)
       : [...items, item];
   };
 
@@ -496,15 +524,20 @@ function AflFilterSort({
 
     // Apply current filters
     if (selectedRounds.length > 0) {
-      baseMatches = baseMatches.filter(m => selectedRounds.includes(m.roundCode));
+      baseMatches = baseMatches.filter((m) =>
+        selectedRounds.includes(m.roundCode),
+      );
     }
     if (selectedVenues.length > 0) {
-      baseMatches = baseMatches.filter(m => selectedVenues.includes(m.venue?.name || ''));
+      baseMatches = baseMatches.filter((m) =>
+        selectedVenues.includes(m.venue?.name || ''),
+      );
     }
     if (selectedTeams.length > 0) {
-      baseMatches = baseMatches.filter(m => 
-        selectedTeams.includes(m.squads?.home?.name || '') ||
-        selectedTeams.includes(m.squads?.away?.name || '')
+      baseMatches = baseMatches.filter(
+        (m) =>
+          selectedTeams.includes(m.squads?.home?.name || '') ||
+          selectedTeams.includes(m.squads?.away?.name || ''),
       );
     }
 
@@ -516,38 +549,50 @@ function AflFilterSort({
     // For rounds: check what's available given current venue and team filters
     let tempMatches = allMatches;
     if (selectedVenues.length > 0) {
-      tempMatches = tempMatches.filter(m => selectedVenues.includes(m.venue?.name || ''));
-    }
-    if (selectedTeams.length > 0) {
-      tempMatches = tempMatches.filter(m => 
-        selectedTeams.includes(m.squads?.home?.name || '') ||
-        selectedTeams.includes(m.squads?.away?.name || '')
+      tempMatches = tempMatches.filter((m) =>
+        selectedVenues.includes(m.venue?.name || ''),
       );
     }
-    tempMatches.forEach(m => availableRounds.add(m.roundCode));
+    if (selectedTeams.length > 0) {
+      tempMatches = tempMatches.filter(
+        (m) =>
+          selectedTeams.includes(m.squads?.home?.name || '') ||
+          selectedTeams.includes(m.squads?.away?.name || ''),
+      );
+    }
+    tempMatches.forEach((m) => availableRounds.add(m.roundCode));
 
     // For venues: check what's available given current round and team filters
     tempMatches = allMatches;
     if (selectedRounds.length > 0) {
-      tempMatches = tempMatches.filter(m => selectedRounds.includes(m.roundCode));
-    }
-    if (selectedTeams.length > 0) {
-      tempMatches = tempMatches.filter(m => 
-        selectedTeams.includes(m.squads?.home?.name || '') ||
-        selectedTeams.includes(m.squads?.away?.name || '')
+      tempMatches = tempMatches.filter((m) =>
+        selectedRounds.includes(m.roundCode),
       );
     }
-    tempMatches.forEach(m => m.venue?.name && availableVenues.add(m.venue.name));
+    if (selectedTeams.length > 0) {
+      tempMatches = tempMatches.filter(
+        (m) =>
+          selectedTeams.includes(m.squads?.home?.name || '') ||
+          selectedTeams.includes(m.squads?.away?.name || ''),
+      );
+    }
+    tempMatches.forEach(
+      (m) => m.venue?.name && availableVenues.add(m.venue.name),
+    );
 
     // For teams: check what's available given current round and venue filters
     tempMatches = allMatches;
     if (selectedRounds.length > 0) {
-      tempMatches = tempMatches.filter(m => selectedRounds.includes(m.roundCode));
+      tempMatches = tempMatches.filter((m) =>
+        selectedRounds.includes(m.roundCode),
+      );
     }
     if (selectedVenues.length > 0) {
-      tempMatches = tempMatches.filter(m => selectedVenues.includes(m.venue?.name || ''));
+      tempMatches = tempMatches.filter((m) =>
+        selectedVenues.includes(m.venue?.name || ''),
+      );
     }
-    tempMatches.forEach(m => {
+    tempMatches.forEach((m) => {
       m.squads?.home?.name && availableTeams.add(m.squads.home.name);
       m.squads?.away?.name && availableTeams.add(m.squads.away.name);
     });
@@ -661,7 +706,10 @@ function AflFilterSort({
               return (
                 <button
                   key={round}
-                  onClick={() => !isDisabled && setSelectedRounds(toggleItem(selectedRounds, round))}
+                  onClick={() =>
+                    !isDisabled &&
+                    setSelectedRounds(toggleItem(selectedRounds, round))
+                  }
                   disabled={isDisabled}
                   className={cn(
                     'text-xs font-bold px-3 py-1.5 rounded-full transition-all',
@@ -700,7 +748,10 @@ function AflFilterSort({
               return (
                 <button
                   key={venue}
-                  onClick={() => !isDisabled && setSelectedVenues(toggleItem(selectedVenues, venue))}
+                  onClick={() =>
+                    !isDisabled &&
+                    setSelectedVenues(toggleItem(selectedVenues, venue))
+                  }
                   disabled={isDisabled}
                   className={cn(
                     'text-xs font-bold px-3 py-1.5 rounded-full transition-all',
@@ -739,7 +790,10 @@ function AflFilterSort({
               return (
                 <button
                   key={team}
-                  onClick={() => !isDisabled && setSelectedTeams(toggleItem(selectedTeams, team))}
+                  onClick={() =>
+                    !isDisabled &&
+                    setSelectedTeams(toggleItem(selectedTeams, team))
+                  }
                   disabled={isDisabled}
                   className={cn(
                     'text-xs font-bold px-3 py-1.5 rounded-full transition-all',
