@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html class="light" lang="zh">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Help/Documentation</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&amp;display=swap"
+        rel="stylesheet" />
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0225c5",
+                        "background-light": "#f5f6f8",
+                        "background-dark": "#0f1323",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+</head>
+
+<body class="font-display bg-background-light dark:bg-background-dark">
+    <div class="relative flex min-h-screen w-full flex-col group/design-root overflow-x-hidden">
+        <div class="layout-container flex h-full grow flex-col">
+            <div class="px-4 md:px-10 lg:px-20 xl:px-40 flex flex-1 justify-center py-5">
+                <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+                    <!-- TopNavBar -->
+                    <header class="flex items-center justify-between whitespace-nowrap px-4 py-3">
+                        <div class="flex items-center gap-4 text-slate-900 dark:text-white">
+                            <div class="size-6 text-primary">
+                                <svg fill="currentColor" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                                    <path clip-rule="evenodd"
+                                        d="M24 18.4228L42 11.475V34.3663C42 34.7796 41.7457 35.1504 41.3601 35.2992L24 42V18.4228Z"
+                                        fill-opacity="0.5" fill-rule="evenodd"></path>
+                                    <path clip-rule="evenodd"
+                                        d="M24 8.18819L33.4123 11.574L24 15.2071L14.5877 11.574L24 8.18819ZM9 15.8487L21 20.4805V37.6263L9 32.9945V15.8487ZM27 37.6263V20.4805L39 15.8487V32.9945L27 37.6263ZM25.354 2.29885C24.4788 1.98402 23.5212 1.98402 22.646 2.29885L4.98454 8.65208C3.7939 9.08038 3 10.2097 3 11.475V34.3663C3 36.0196 4.01719 37.5026 5.55962 38.098L22.9197 44.7987C23.6149 45.0671 24.3851 45.0671 25.0803 44.7987L42.4404 38.098C43.9828 37.5026 45 36.0196 45 34.3663V11.475C45 10.2097 44.2061 9.08038 43.0155 8.65208L25.354 2.29885Z"
+                                        fill="currentColor" fill-rule="evenodd"></path>
+                                </svg>
+                            </div>
+                            <h2
+                                class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em]">
+                                HR System</h2>
+                        </div>
+                        <div class="flex flex-1 justify-end gap-2 sm:gap-4">
+                            <a class="hidden sm:flex items-center h-10 px-4 text-slate-900 dark:text-white text-sm font-medium leading-normal hover:bg-slate-200 dark:hover:bg-slate-700 rounded-full transition-colors"
+                                href="#">Dashboard</a>
+                            <button
+                                class="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 w-10 bg-slate-100 dark:bg-background-dark dark:hover:bg-slate-700 text-slate-900 dark:text-white text-sm font-bold leading-normal tracking-[0.015em] hover:bg-slate-200 transition-colors">
+                                <i data-lucide="bell" class="size-5"></i>
+                            </button>
+                            <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10"
+                                data-alt="User avatar placeholder image"
+                                style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAGnSNvHGrMSTbbyaytbUau1hiBBmrkPNmdhZtLHR7s7ndoGr8PkWFNAefQcijvEwKMtVHUVe2dcffvOOYDrW6WYiFyQglwXEM4DUprv0Tuf-R6XkBcSyqlUIAy2TPsmhd_xg0h3r5UMUDVfxL9BBKWGT07Mvbzsl_3d6y6-4DfA76Z30Iyz4rYzn9yAW_wRUflH4GWYMRkAPWkntzzqPI0DKXBrykpil-lZGo2U4s4a_2FOBuC6xmV7yP5rv37KHllOOnoj8My4A");'>
+                            </div>
+                        </div>
+                    </header>
+                    <main class="flex-1">
+                        <!-- PageHeading -->
+                        <div class="flex flex-wrap justify-between gap-3 p-4 text-center mt-8">
+                            <div class="flex w-full flex-col items-center gap-3">
+                                <p
+                                    class="text-slate-900 dark:text-white text-4xl sm:text-5xl font-black leading-tight tracking-[-0.033em]">
+                                    Help Center</p>
+                                <p
+                                    class="text-slate-500 dark:text-slate-400 text-base font-normal leading-normal max-w-md">
+                                    Search for questions, guides, or keywords, and we'll find the best answer for you.
+                                </p>
+                            </div>
+                        </div>
+                        <!-- SearchBar -->
+                        <div class="px-4 py-3 mt-4">
+                            <label class="flex flex-col min-w-40 h-14 w-full max-w-2xl mx-auto">
+                                <div class="flex w-full flex-1 items-stretch rounded-full h-full shadow-sm">
+                                    <div
+                                        class="text-slate-500 dark:text-slate-400 flex bg-white dark:bg-slate-800 items-center justify-center pl-5 rounded-l-full border-r-0">
+                                        <i data-lucide="search" class="size-6"></i>
+                                    </div>
+                                    <input
+                                        class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-r-full text-slate-900 dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background-light dark:focus:ring-offset-background-dark border-none bg-white dark:bg-slate-800 h-full placeholder:text-slate-500 dark:placeholder:text-slate-400 pl-2 text-base font-normal leading-normal"
+                                        placeholder="Search help documentation" value="" />
+                                </div>
+                            </label>
+                        </div>
+                        <!-- ImageGrid / Categories -->
+                        <div class="grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-4 p-4 mt-8">
+                            <div
+                                class="flex flex-col gap-4 p-6 rounded-lg bg-white dark:bg-slate-800  hover:-translate-y-1 transition-all cursor-pointer">
+                                <div
+                                    class="w-12 h-12 bg-primary/20 text-primary flex items-center justify-center rounded-full">
+                                    <i data-lucide="book-open" class="size-8"></i>
+                                </div>
+                                <div>
+                                    <p class="text-slate-900 dark:text-white text-base font-medium leading-normal">
+                                        Guides
+                                    </p>
+                                    <p
+                                        class="text-slate-500 dark:text-slate-400 text-sm font-normal leading-normal mt-1">
+                                        Step-by-step instructions for core system functions</p>
+                                </div>
+                            </div>
+                            <div
+                                class="flex flex-col gap-4 p-6 rounded-lg bg-white dark:bg-slate-800  hover:-translate-y-1 transition-all cursor-pointer">
+                                <div
+                                    class="w-12 h-12 bg-primary/20 text-primary flex items-center justify-center rounded-full">
+                                    <i data-lucide="circle-help" class="size-8"></i>
+                                </div>
+                                <div>
+                                    <p class="text-slate-900 dark:text-white text-base font-medium leading-normal">FAQ
+                                    </p>
+                                    <p
+                                        class="text-slate-500 dark:text-slate-400 text-sm font-normal leading-normal mt-1">
+                                        Collection of frequently asked questions and answers</p>
+                                </div>
+                            </div>
+                            <div
+                                class="flex flex-col gap-4 p-6 rounded-lg bg-white dark:bg-slate-800  hover:-translate-y-1 transition-all cursor-pointer">
+                                <div
+                                    class="w-12 h-12 bg-primary/20 text-primary flex items-center justify-center rounded-full">
+                                    <i data-lucide="workflow" class="size-8"></i>
+                                </div>
+                                <div>
+                                    <p class="text-slate-900 dark:text-white text-base font-medium leading-normal">
+                                        Process Examples
+                                    </p>
+                                    <p
+                                        class="text-slate-500 dark:text-slate-400 text-sm font-normal leading-normal mt-1">
+                                        Walkthroughs of common HR workflows</p>
+                                </div>
+                            </div>
+                            <div
+                                class="flex flex-col gap-4 p-6 rounded-lg bg-white dark:bg-slate-800  hover:-translate-y-1 transition-all cursor-pointer">
+                                <div
+                                    class="w-12 h-12 bg-primary/20 text-primary flex items-center justify-center rounded-full">
+                                    <i data-lucide="lightbulb" class="size-8"></i>
+                                </div>
+                                <div>
+                                    <p class="text-slate-900 dark:text-white text-base font-medium leading-normal">
+                                        Concepts
+                                    </p>
+                                    <p
+                                        class="text-slate-500 dark:text-slate-400 text-sm font-normal leading-normal mt-1">
+                                        Definitions of key HR and payroll terms</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- SectionHeader -->
+                        <h2
+                            class="text-slate-900 dark:text-white text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-10">
+                            Popular Articles</h2>
+                        <!-- Popular Articles List (New Component) -->
+                        <div class="px-4 py-3 space-y-3">
+                            <a class="flex items-center justify-between p-4 bg-white dark:bg-slate-800 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
+                                href="#">
+                                <div class="flex items-center gap-4">
+                                    <i data-lucide="file-text" class="text-slate-500 dark:text-slate-400 size-6"></i>
+                                    <p class="text-slate-700 dark:text-slate-300 font-medium">How to set up a new
+                                        employee onboarding process?</p>
+                                </div>
+                                <i data-lucide="chevron-right" class="text-slate-400 dark:text-slate-500 size-6"></i>
+                            </a>
+                            <a class="flex items-center justify-between p-4 bg-white dark:bg-slate-800 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
+                                href="#">
+                                <div class="flex items-center gap-4">
+                                    <i data-lucide="file-text" class="text-slate-500 dark:text-slate-400 size-6"></i>
+                                    <p class="text-slate-700 dark:text-slate-300 font-medium">Guide to troubleshooting
+                                        payroll calculation errors</p>
+                                </div>
+                                <i data-lucide="chevron-right" class="text-slate-400 dark:text-slate-500 size-6"></i>
+                            </a>
+                            <a class="flex items-center justify-between p-4 bg-white dark:bg-slate-800 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
+                                href="#">
+                                <div class="flex items-center gap-4">
+                                    <i data-lucide="file-text" class="text-slate-500 dark:text-slate-400 size-6"></i>
+                                    <p class="text-slate-700 dark:text-slate-300 font-medium">Holiday and leave policy
+                                        configuration</p>
+                                </div>
+                                <i data-lucide="chevron-right" class="text-slate-400 dark:text-slate-500 size-6"></i>
+                            </a>
+                        </div>
+                        <!-- Contact/Footer Section (New Component) -->
+                        <div class="mt-16 mb-8 px-4 py-8 bg-primary/10 dark:bg-primary/20 rounded-lg text-center">
+                            <h3 class="text-slate-900 dark:text-white text-xl font-bold">Didn't find what you were
+                                looking for?</h3>
+                            <p class="text-slate-600 dark:text-slate-300 mt-2">Our support team is always ready to help.
+                            </p>
+                            <button
+                                class="mt-6 flex max-w-xs cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-full h-11 px-6 bg-primary text-white text-sm font-bold leading-normal tracking-[0.015em] mx-auto hover:bg-opacity-90 transition-opacity">
+                                <i data-lucide="life-buoy" class="size-5"></i>
+                                <span>Contact Support</span>
+                            </button>
+                        </div>
+                    </main>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+
+</html>

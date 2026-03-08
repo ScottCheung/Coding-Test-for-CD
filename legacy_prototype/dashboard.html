@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Admin Dashboard</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+
+    <style>
+        /* Custom scrollbar to match the login page */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 999px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        /* Smooth transitions */
+        * {
+            transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform;
+            transition-duration: 200ms;
+        }
+    </style>
+
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        // Matching the Login Page Blue
+                        primary: {
+                            DEFAULT: "#0f4c81",
+                            dark: "#0a365c",
+                            light: "#3a7bd5",
+                            subtle: "#e0eaf5" // For backgrounds of active items
+                        },
+                        "background-light": "#f3f4f6", // Matches Login
+                        "background-dark": "#121212",  // Matches Login
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "xl": "1rem",
+                        "2xl": "1.5rem",
+                        "3xl": "2rem",
+                        "full": "9999px" // As requested
+                    },
+                    boxShadow: {
+                        'soft': '0 4px 20px -2px rgba(0, 0, 0, 0.05)',
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+
+<body
+    class="bg-background-light  dark:bg-background-dark font-display text-gray-800 dark:text-gray-200 antialiased selection:bg-primary selection:text-white">
+
+    <div class="relative flex min-h-screen w-full flex-col group/design-root overflow-x-hidden">
+        <div class="flex flex-row min-h-screen">
+
+            <!-- SideNavBar -->
+            <aside
+                class="w-72 flex-shrink-0 bg-white dark:bg-zinc-900 p-6 flex flex-col justify-between border-r border-gray-100 dark:border-zinc-800 hidden lg:flex  h-screen z-10">
+                <div class="flex flex-col gap-10">
+                    <!-- Brand -->
+                    <div class="flex gap-4 items-center px-2">
+                        <div class="flex items-center justify-center size-10 rounded-xl bg-primary text-white">
+                            <i data-lucide="layout-grid" class="size-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <h1 class="text-gray-900 dark:text-white text-lg font-bold leading-none tracking-tight">
+                                Admin Portal</h1>
+                            <p class="text-gray-400 dark:text-gray-500 text-xs font-medium mt-1">Employment Types System
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Navigation -->
+                    <nav class="flex flex-col gap-1 ">
+                        <!-- Active Item: Uses Primary color + Subtle background + Full Round -->
+                        <a class="flex items-center gap-3 px-4 py-3.5 rounded-full bg-primary/10 text-primary dark:bg-primary/20 dark:text-blue-200 transition-all"
+                            href="#">
+                            <i data-lucide="layout-dashboard" class="size-5"></i>
+                            <p class="text-sm font-bold">Dashboard</p>
+                        </a>
+
+                        <!-- Inactive Items: Hover effects only -->
+                        <a class="flex items-center gap-3 px-4 py-3.5 rounded-full hover:bg-gray-50 dark:hover:bg-zinc-800 text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-all group"
+                            href="./accounts.html">
+                            <i data-lucide="users" class="size-5"></i>
+                            <p class="text-sm font-medium">Accounts</p>
+                        </a>
+                        <a class="flex items-center gap-3 px-4 py-3.5 rounded-full hover:bg-gray-50 dark:hover:bg-zinc-800 text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-all group"
+                            href="./employment-types.html">
+                            <i data-lucide="calendar" class="size-5"></i>
+                            <p class="text-sm font-medium">Employment Types</p>
+                        </a>
+                        <a class="flex items-center gap-3 px-4 py-3.5 rounded-full hover:bg-gray-50 dark:hover:bg-zinc-800 text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-all group"
+                            href="./leave-types.html">
+                            <i data-lucide="settings" class="size-5"></i>
+                            <p class="text-sm font-medium">Leave Types</p>
+                        </a>
+                        <a class="flex items-center gap-3 px-4 py-3.5 rounded-full hover:bg-gray-50 dark:hover:bg-zinc-800 text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-all group"
+                            href="./leave-rules.html">
+                            <i data-lucide="settings-2" class="size-5"></i>
+                            <p class="text-sm font-medium">Leave Rules</p>
+                        </a>
+                        <a class="flex items-center gap-3 px-4 py-3.5 rounded-full hover:bg-gray-50 dark:hover:bg-zinc-800 text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-all group"
+                            href="./helpCenter.html">
+                            <i data-lucide="circle-help" class="size-5"></i>
+                            <p class="text-sm font-medium">Help &amp; Support</p>
+                        </a>
+
+                    </nav>
+                </div>
+
+                <!-- Footer Nav -->
+                <div>
+
+                    <div class="flex flex gap-3 ">
+                        <div
+                            class="size-12 rounded-full overflow-hidden border-2 border-white dark:border-zinc-800 cursor-pointer hover:scale-105 transition-transform">
+                            <img src="https://media.licdn.com/dms/image/v2/C4E0BAQG0sUKoTGt7gQ/company-logo_100_100/company-logo_100_100/0/1630605791837?e=1766016000&v=beta&t=7ZQBJ5PvGvzlQbGQEA-LTmVi0OMHRL1gafacOfZa35E"
+                                alt="Avatar" class="w-full h-full object-cover">
+                        </div>
+                        <a class="flex items-center gap-3 px-4 py-3 rounded-full hover:bg-red-50 dark:hover:bg-red-900/10 text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400 transition-all"
+                            href="#">
+                            <i data-lucide="log-out" class="size-4"></i>
+                            <p class="text-sm font-medium">Log Out</p>
+                        </a>
+                    </div>
+
+                </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="flex-1 p-6 lg:p-10 mx-auto w-full h-screen overflow-y-auto">
+                <div class="">
+
+                    <!-- PageHeading -->
+                    <div class="flex flex-wrap justify-between gap-4 mb-10 items-center">
+                        <div class="flex min-w-72 flex-col gap-1">
+                            <h1 class="text-gray-900 dark:text-white text-3xl md:text-4xl font-bold tracking-tight">
+                                Dashboard</h1>
+                            <p class="text-gray-500 dark:text-gray-400 text-sm md:text-base">Welcome back, Admin! Here's
+                                what's happening today.</p>
+                        </div>
+
+                    </div>
+
+                    <!-- Stats Grid -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+                        <div
+                            class="relative flex flex-col gap-4 rounded-3xl p-6 bg-white dark:bg-zinc-900 border border-gray-100 dark:border-zinc-800  transition-shadow overflow-hidden group">
+                            <div
+                                class="absolute right-6 bottom-0 opacity-5 transition-transform duration-700 pointer-events-none">
+                                <i data-lucide="users" class="text-primary size-[100px]" stroke-width="1"></i>
+                            </div>
+
+                            <div class="relative z-10 flex flex-col">
+                                <p class="text-gray-500 dark:text-gray-400 text-sm font-medium">Total User Accounts</p>
+                                <div class="flex items-center gap-2">
+                                    <p class="text-gray-900 dark:text-white text-4xl font-bold mt-1">1,240</p>
+                                    <span
+                                        class="text-xs font-bold text-green-600 dark:text-green-400 bg-green-500/10 dark:bg-green-900/20 px-2 py-1 rounded-full flex items-center gap-1">
+                                        <i data-lucide="trending-up" class="size-3"></i> +1.5%
+                                    </span>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div
+                            class="relative flex flex-col gap-4 rounded-3xl p-6 bg-white dark:bg-zinc-900 border border-gray-100 dark:border-zinc-800  transition-shadow overflow-hidden group">
+                            <div
+                                class="absolute right-6 bottom-0 opacity-5 transition-transform duration-700 pointer-events-none">
+                                <i data-lucide="id-card" class="text-primary size-[100px]" stroke-width="1"></i>
+                            </div>
+                            <div class="relative z-10 flex flex-col">
+                                <p class="text-gray-500 dark:text-gray-400 text-sm font-medium">Active Employee Types
+                                </p>
+                                <div class="flex items-center gap-2">
+                                    <p class="text-gray-900 dark:text-white text-4xl font-bold mt-1">5</p>
+                                    <span
+                                        class="text-xs font-bold text-gray-500 bg-gray-50 dark:bg-zinc-800 px-2 py-1 rounded-full flex items-center gap-1">
+                                        <i data-lucide="minus" class="size-3"></i> 0%
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div
+                            class="relative flex flex-col gap-4 rounded-3xl p-6 bg-white dark:bg-zinc-900 border border-gray-100 dark:border-zinc-800  transition-shadow overflow-hidden group">
+                            <div
+                                class="absolute right-6 bottom-0 opacity-5 transition-transform duration-700 pointer-events-none">
+                                <i data-lucide="layers" class="text-primary size-[100px]" stroke-width="1"></i>
+                            </div>
+                            <div class="relative z-10 flex flex-col">
+                                <p class="text-gray-500 dark:text-gray-400 text-sm font-medium">Total Leave Types</p>
+                                <div class="flex items-center gap-2">
+                                    <p class="text-gray-900 dark:text-white text-4xl font-bold mt-1">12</p>
+                                    <span
+                                        class="text-xs font-bold text-green-600 dark:text-green-400 bg-green-500/10 dark:bg-green-900/20 px-2 py-1 rounded-full flex items-center gap-1">
+                                        <i data-lucide="trending-up" class="size-3"></i> +8%
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="mb-10">
+                        <h2 class="text-gray-900 dark:text-white text-xl font-bold tracking-tight mb-5">Quick Actions
+                        </h2>
+                        <div class="flex flex-wrap gap-4">
+                            <!-- Primary Button: Rounded Full + Gradient -->
+                            <button
+                                class="flex items-center justify-center gap-2 h-12 px-6 rounded-full bg-gradient-to-r from-primary-dark to-primary text-white text-sm font-bold  hover:-translate-y-0.5 transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
+                                <i data-lucide="plus" class="size-5"></i>
+                                <span>New Account</span>
+                            </button>
+
+                            <!-- Secondary Buttons: Rounded Full + White BG + Soft Shadow + Simple Focus -->
+                            <button
+                                class="flex items-center justify-center gap-2 h-12 px-6 rounded-full bg-white dark:bg-zinc-800 text-gray-700 dark:text-gray-200 border border-gray-200 dark:border-zinc-700  hover:border-gray-300 dark:hover:border-zinc-600 text-sm font-bold transition-all focus:outline-none focus:border-primary">
+                                <span>Create Employment Type</span>
+                            </button>
+                            <button
+                                class="flex items-center justify-center gap-2 h-12 px-6 rounded-full bg-white dark:bg-zinc-800 text-gray-700 dark:text-gray-200 border border-gray-200 dark:border-zinc-700  hover:border-gray-300 dark:hover:border-zinc-600 text-sm font-bold transition-all focus:outline-none focus:border-primary">
+                                <span>Create Leave Type</span>
+                            </button>
+                            <button
+                                class="flex items-center justify-center gap-2 h-12 px-6 rounded-full bg-white dark:bg-zinc-800 text-gray-700 dark:text-gray-200 border border-gray-200 dark:border-zinc-700  hover:border-gray-300 dark:hover:border-zinc-600 text-sm font-bold transition-all focus:outline-none focus:border-primary">
+                                <span>Define Leave Rule</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-12 gap-8">
+                        <!-- Recent Activity Section -->
+                        <div class="col-span-12 md:col-span-6 lg:col-span-8">
+                            <div class="flex items-center justify-between mb-5">
+                                <h2 class="text-gray-900 dark:text-white text-xl font-bold tracking-tight">Recent
+                                    Operations</h2>
+                                <a href="#"
+                                    class="text-sm font-medium text-primary hover:text-primary-dark transition-colors">View
+                                    All</a>
+                            </div>
+
+                            <div
+                                class="rounded-2xl bg-white dark:bg-zinc-900 border border-gray-100 dark:border-zinc-800 overflow-hidden">
+                                <div class="divide-y divide-gray-100 dark:divide-zinc-800">
+                                    <div
+                                        class="p-5 flex items-start gap-4 hover:bg-gray-50 dark:hover:bg-zinc-800/50 transition-colors cursor-pointer">
+                                        <div
+                                            class="flex-shrink-0 size-10 rounded-full bg-primary/10 dark:bg-primary/20 flex items-center justify-center text-primary">
+                                            <i data-lucide="file-pen-line" class="size-5"></i>
+                                        </div>
+                                        <div class="flex-1">
+                                            <p class="text-sm font-semibold text-gray-900 dark:text-white">Rule updated
+                                                for 'Annual Leave'</p>
+                                            <p class="text-xs text-gray-500 mt-0.5">Updated by <span
+                                                    class="font-medium text-gray-700 dark:text-gray-300">Jane Doe</span>
+                                                • 2 hours ago</p>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="p-5 flex items-start gap-4 hover:bg-gray-50 dark:hover:bg-zinc-800/50 transition-colors cursor-pointer">
+                                        <div
+                                            class="flex-shrink-0 size-10 rounded-full bg-primary/10 dark:bg-primary/20 flex items-center justify-center text-primary">
+                                            <i data-lucide="user-plus" class="size-5"></i>
+                                        </div>
+                                        <div class="flex-1">
+                                            <p class="text-sm font-semibold text-gray-900 dark:text-white">New employee
+                                                'John Smith' added</p>
+                                            <p class="text-xs text-gray-500 mt-0.5">Added by <span
+                                                    class="font-medium text-gray-700 dark:text-gray-300">Jane Doe</span>
+                                                • 5 hours ago</p>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="p-5 flex items-start gap-4 hover:bg-gray-50 dark:hover:bg-zinc-800/50 transition-colors cursor-pointer">
+                                        <div
+                                            class="flex-shrink-0 size-10 rounded-full bg-primary/10 dark:bg-primary/20 flex items-center justify-center text-primary">
+                                            <i data-lucide="plus-circle" class="size-5"></i>
+                                        </div>
+                                        <div class="flex-1">
+                                            <p class="text-sm font-semibold text-gray-900 dark:text-white">New leave
+                                                type 'Sick Leave' created</p>
+                                            <p class="text-xs text-gray-500 mt-0.5">Created by <span
+                                                    class="font-medium text-gray-700 dark:text-gray-300">Admin</span> •
+                                                1 day ago</p>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="p-5 flex items-start gap-4 hover:bg-gray-50 dark:hover:bg-zinc-800/50 transition-colors cursor-pointer">
+                                        <div
+                                            class="flex-shrink-0 size-10 rounded-full bg-primary/10 dark:bg-primary/20 flex items-center justify-center text-primary">
+                                            <i data-lucide="id-card" class="size-5"></i>
+                                        </div>
+                                        <div class="flex-1">
+                                            <p class="text-sm font-semibold text-gray-900 dark:text-white">Employment
+                                                type 'Part-time' updated</p>
+                                            <p class="text-xs text-gray-500 mt-0.5">Updated by <span
+                                                    class="font-medium text-gray-700 dark:text-gray-300">Admin</span> •
+                                                2 days ago</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Side Widgets -->
+                        <div class="flex flex-col col-span-12 md:col-span-6 lg:col-span-4 gap-8">
+                            <!-- Expiring Rules -->
+                            <div>
+                                <h2 class="text-gray-900 dark:text-white text-xl font-bold tracking-tight mb-5">Expiring
+                                    Rules</h2>
+                                <div
+                                    class="rounded-2xl p-5 bg-white dark:bg-zinc-900 border border-gray-100 dark:border-zinc-800 flex flex-col gap-4">
+                                    <div
+                                        class="flex items-center justify-between p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-zinc-800 transition-colors">
+                                        <div class="flex items-center gap-3">
+                                            <span class="size-2 rounded-full bg-primary"></span>
+                                            <p class="text-sm font-medium text-gray-700 dark:text-gray-300">Probation
+                                                Policy</p>
+                                        </div>
+                                        <span
+                                            class="text-xs font-bold text-primary bg-primary/10 dark:bg-primary/20 dark:text-blue-200 px-2.5 py-1 rounded-full border border-primary/20 dark:border-primary/30">5
+                                            days</span>
+                                    </div>
+                                    <div
+                                        class="flex items-center justify-between p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-zinc-800 transition-colors">
+                                        <div class="flex items-center gap-3">
+                                            <span class="size-2 rounded-full bg-primary"></span>
+                                            <p class="text-sm font-medium text-gray-700 dark:text-gray-300">Health
+                                                Insurance</p>
+                                        </div>
+                                        <span
+                                            class="text-xs font-bold text-primary bg-primary/10 dark:bg-primary/20 dark:text-blue-200 px-2.5 py-1 rounded-full border border-primary/20 dark:border-primary/30">12
+                                            days</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Cashout Limit -->
+                            <div>
+                                <h2 class="text-gray-900 dark:text-white text-xl font-bold tracking-tight mb-5">Cashout
+                                    Limit</h2>
+                                <div
+                                    class="rounded-3xl p-6 bg-gradient-to-br from-primary to-primary-dark text-white relative overflow-hidden group">
+                                    <div class="absolute top-0 right-0 p-8 opacity-5 transition-transform duration-700">
+                                        <i data-lucide="dollar-sign" class="size-[100px]" stroke-width="1"></i>
+                                    </div>
+                                    <div class="relative z-10">
+                                        <p class="text-blue-100 text-sm font-medium mb-1">System-wide Total</p>
+                                        <p class="text-3xl font-bold tracking-tight">$125,480.00</p>
+                                        <div class="mt-4 flex gap-2">
+                                            <span
+                                                class="text-xs bg-white/20 backdrop-blur-sm px-2 py-1 rounded-lg border border-white/20">FY
+                                                2024-25</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>EmploymentType Management</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&amp;display=swap"
+        rel="stylesheet" />
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0225c5",
+                        "background-light": "#f8f9fa",
+                        "background-dark": "#0f0f23",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "1rem",
+                        "lg": "1.5rem",
+                        "xl": "2rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+</head>
+
+<body class="font-display">
+    <div
+        class="relative flex h-auto min-h-screen w-full flex-col bg-background-light dark:bg-background-dark group/design-root overflow-x-hidden">
+        <div class="layout-container flex h-full grow flex-row">
+            <!-- SideNavBar -->
+            <div class="flex-col justify-between bg-white dark:bg-gray-900/20 p-4 hidden lg:flex w-64">
+                <div class="flex flex-col gap-4">
+                    <div class="flex gap-3 items-center">
+                        <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10"
+                            data-alt="Company Logo"
+                            style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDVd2UUZ-6q0-jFtogLsOuwvpkkpVw6rRW4Sa3nwYyWg5th-4jHaRuPzMlxh4FT59daNGCMheaxDnPxGajh1b0C6v0vBD-riWFO5-ZWubagdNCQ0i-b-RGFTtQUHJItFSn2yeZSf25FFLl25fnH240ujSE5GPpDK0cbQq8fCYq063pqEWjMwiFJpBKCXMAi-U1mNrioq6apGLS9-jFfg5yriRGIS0RV8w5flS16m7tBwtcAJyauaWMtxuUa01tiV2lP6DuTn3ItHw");'>
+                        </div>
+                        <div class="flex flex-col">
+                            <h1 class="text-gray-900 dark:text-white text-base font-medium leading-normal">Admin Portal
+                            </h1>
+                            <p class="text-gray-500 dark:text-gray-400 text-sm font-normal leading-normal">HR Management
+                            </p>
+                        </div>
+                    </div>
+                    <div class="flex flex-col gap-2 mt-4">
+                        <a class="flex items-center gap-3 px-3 py-2 rounded-full text-gray-700 dark:text-gray-300 hover:bg-gray-500/10 dark:hover:bg-gray-800"
+                            href="#">
+                            <i data-lucide="layout-dashboard" class="text-gray-800 dark:text-gray-200 size-5"></i>
+                            <p class="text-sm font-medium leading-normal">Dashboard</p>
+                        </a>
+                        <a class="flex items-center gap-3 px-3 py-2 rounded-full text-gray-700 dark:text-gray-300 hover:bg-gray-500/10 dark:hover:bg-gray-800"
+                            href="#">
+                            <i data-lucide="users" class="text-gray-800 dark:text-gray-200 size-5"></i>
+                            <p class="text-sm font-medium leading-normal">Employees</p>
+                        </a>
+                        <a class="flex items-center gap-3 px-3 py-2 rounded-full bg-primary/10 dark:bg-primary/20 text-primary dark:text-white"
+                            href="#">
+                            <i data-lucide="briefcase" class="size-5"></i>
+                            <p class="text-sm font-medium leading-normal">Employment Types</p>
+                        </a>
+                        <a class="flex items-center gap-3 px-3 py-2 rounded-full text-gray-700 dark:text-gray-300 hover:bg-gray-500/10 dark:hover:bg-gray-800"
+                            href="#">
+                            <i data-lucide="settings" class="text-gray-800 dark:text-gray-200 size-5"></i>
+                            <p class="text-sm font-medium leading-normal">Settings</p>
+                        </a>
+                        <a class="flex items-center gap-3 px-3 py-2 rounded-full text-gray-700 dark:text-gray-300 hover:bg-gray-500/10 dark:hover:bg-gray-800"
+                            href="#">
+                            <i data-lucide="bar-chart-3" class="text-gray-800 dark:text-gray-200 size-5"></i>
+                            <p class="text-sm font-medium leading-normal">Reports</p>
+                        </a>
+                    </div>
+                </div>
+                <div class="flex flex-col gap-4">
+                    <a class="flex items-center gap-3 px-3 py-2 rounded-full text-gray-700 dark:text-gray-300 hover:bg-gray-500/10 dark:hover:bg-gray-800"
+                        href="#">
+                        <i data-lucide="circle-help" class="text-gray-800 dark:text-gray-200 size-5"></i>
+                        <p class="text-sm font-medium leading-normal">Help &amp; Support</p>
+                    </a>
+                    <button
+                        class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-4 bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-white text-sm font-bold leading-normal tracking-[0.015em] hover:bg-gray-300 dark:hover:bg-gray-700">
+                        <span class="truncate">Log Out</span>
+                    </button>
+                </div>
+            </div>
+            <!-- Main Content -->
+            <main class="flex-1 p-4 sm:p-6 lg:p-8">
+                <div class="max-w-4xl mx-auto">
+                    <!-- PageHeading -->
+                    <div class="flex flex-wrap justify-between items-center gap-4 mb-8">
+                        <div class="flex flex-col gap-1">
+                            <h1
+                                class="text-gray-900 dark:text-white text-4xl font-black leading-tight tracking-[-0.033em]">
+                                EmploymentType Management</h1>
+                            <p class="text-gray-500 dark:text-gray-400 text-base font-normal leading-normal">View and
+                                manage employee types for each account.</p>
+                        </div>
+                        <button
+                            class="flex items-center justify-center gap-2 min-w-[84px] cursor-pointer rounded-full h-12 px-6 bg-primary text-white text-sm font-bold leading-normal tracking-[0.015em] hover:bg-primary/90">
+                            <i data-lucide="plus" class="size-5"></i>
+                            <span class="truncate">New EmploymentType</span>
+                        </button>
+                    </div>
+                    <!-- Account Section A -->
+                    <div>
+                        <h2
+                            class="text-gray-900 dark:text-white text-[22px] font-bold leading-tight tracking-[-0.015em] px-2 pb-3 pt-5">
+                            Account Name A</h2>
+                        <div class="flex flex-col gap-3">
+                            <!-- Accordion Card 1 -->
+                            <details
+                                class="flex flex-col rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900/50 p-4 group transition-all duration-300 ease-in-out  dark:hover:border-primary/50"
+                                open="">
+                                <summary class="flex cursor-pointer items-center justify-between gap-4 list-none">
+                                    <div class="flex items-center gap-4 flex-1">
+                                        <div class="flex-col">
+                                            <p
+                                                class="text-gray-900 dark:text-white text-base font-medium leading-normal">
+                                                Full-time Employee (FT-001)</p>
+                                            <p class="text-gray-500 dark:text-gray-400 text-sm">40 hours/week</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center gap-3">
+                                        <div class="flex items-center gap-2">
+                                            <span
+                                                class="text-sm font-medium text-gray-500 dark:text-gray-400">Active</span>
+                                            <label class="relative inline-flex items-center cursor-pointer">
+                                                <input checked="" class="sr-only peer" type="checkbox" value="" />
+                                                <div
+                                                    class="w-11 h-6 bg-gray-200 dark:bg-gray-700 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary">
+                                                </div>
+                                            </label>
+                                        </div>
+                                        <button
+                                            class="p-2 rounded-full hover:bg-gray-500/10 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-300">
+                                            <i data-lucide="pencil" class="size-5"></i>
+                                        </button>
+                                        <button
+                                            class="p-2 rounded-full hover:bg-red-50 dark:hover:bg-red-900/50 text-red-600 dark:text-red-400">
+                                            <i data-lucide="trash-2" class="size-5"></i>
+                                        </button>
+                                        <div
+                                            class="text-gray-700 dark:text-gray-300 group-open:rotate-180 transition-transform duration-300">
+                                            <i data-lucide="chevron-down" class="size-5"></i>
+                                        </div>
+                                    </div>
+                                </summary>
+                                <div class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+                                    <p class="text-gray-500 dark:text-gray-400 text-sm font-normal leading-relaxed">This
+                                        is a detailed description or internal note about the full-time employment type.
+                                        It includes policies, benefits, and other relevant information for HR personnel.
+                                    </p>
+                                </div>
+                            </details>
+                            <!-- Accordion Card 2 -->
+                            <details
+                                class="flex flex-col rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900/50 p-4 group transition-all duration-300 ease-in-out  dark:hover:border-primary/50">
+                                <summary class="flex cursor-pointer items-center justify-between gap-4 list-none">
+                                    <div class="flex items-center gap-4 flex-1">
+                                        <div class="flex-col">
+                                            <p
+                                                class="text-gray-900 dark:text-white text-base font-medium leading-normal">
+                                                Part-time Employee (PT-001)</p>
+                                            <p class="text-gray-500 dark:text-gray-400 text-sm">20 hours/week</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center gap-3">
+                                        <div class="flex items-center gap-2">
+                                            <span
+                                                class="text-sm font-medium text-gray-500 dark:text-gray-400">Active</span>
+                                            <label class="relative inline-flex items-center cursor-pointer">
+                                                <input checked="" class="sr-only peer" type="checkbox" value="" />
+                                                <div
+                                                    class="w-11 h-6 bg-gray-200 dark:bg-gray-700 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary">
+                                                </div>
+                                            </label>
+                                        </div>
+                                        <button
+                                            class="p-2 rounded-full hover:bg-gray-500/10 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-300">
+                                            <i data-lucide="pencil" class="size-5"></i>
+                                        </button>
+                                        <button
+                                            class="p-2 rounded-full hover:bg-red-50 dark:hover:bg-red-900/50 text-red-600 dark:text-red-400">
+                                            <i data-lucide="trash-2" class="size-5"></i>
+                                        </button>
+                                        <div
+                                            class="text-gray-700 dark:text-gray-300 group-open:rotate-180 transition-transform duration-300">
+                                            <i data-lucide="chevron-down" class="size-5"></i>
+                                        </div>
+                                    </div>
+                                </summary>
+                                <div class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+                                    <p class="text-gray-500 dark:text-gray-400 text-sm font-normal leading-relaxed">This
+                                        is a detailed description or internal note about the part-time employment type.
+                                        It includes policies, benefits, and other relevant information.</p>
+                                </div>
+                            </details>
+                        </div>
+                    </div>
+                    <!-- Account Section B -->
+                    <div class="mt-8">
+                        <h2
+                            class="text-gray-900 dark:text-white text-[22px] font-bold leading-tight tracking-[-0.015em] px-2 pb-3 pt-5">
+                            Account Name B</h2>
+                        <div class="flex flex-col gap-3">
+                            <!-- Accordion Card 3 -->
+                            <details
+                                class="flex flex-col rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900/50 p-4 group transition-all duration-300 ease-in-out  dark:hover:border-primary/50">
+                                <summary class="flex cursor-pointer items-center justify-between gap-4 list-none">
+                                    <div class="flex items-center gap-4 flex-1">
+                                        <div class="flex-col">
+                                            <p
+                                                class="text-gray-900 dark:text-white text-base font-medium leading-normal">
+                                                Intern (IN-001)</p>
+                                            <p class="text-gray-500 dark:text-gray-400 text-sm">Seasonal internship
+                                                program</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center gap-3">
+                                        <div class="flex items-center gap-2">
+                                            <span
+                                                class="text-sm font-medium text-gray-500 dark:text-gray-400">Active</span>
+                                            <label class="relative inline-flex items-center cursor-pointer">
+                                                <input checked="" class="sr-only peer" type="checkbox" value="" />
+                                                <div
+                                                    class="w-11 h-6 bg-gray-200 dark:bg-gray-700 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary">
+                                                </div>
+                                            </label>
+                                        </div>
+                                        <button
+                                            class="p-2 rounded-full hover:bg-gray-500/10 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-300">
+                                            <i data-lucide="pencil" class="size-5"></i>
+                                        </button>
+                                        <button
+                                            class="p-2 rounded-full hover:bg-red-50 dark:hover:bg-red-900/50 text-red-600 dark:text-red-400">
+                                            <i data-lucide="trash-2" class="size-5"></i>
+                                        </button>
+                                        <div
+                                            class="text-gray-700 dark:text-gray-300 group-open:rotate-180 transition-transform duration-300">
+                                            <i data-lucide="chevron-down" class="size-5"></i>
+                                        </div>
+                                    </div>
+                                </summary>
+                                <div class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+                                    <p class="text-gray-500 dark:text-gray-400 text-sm font-normal leading-relaxed">
+                                        Details about the internship program, including duration, stipend, and learning
+                                        objectives.</p>
+                                </div>
+                            </details>
+                            <!-- Accordion Card 4 -->
+                            <details
+                                class="flex flex-col rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900/50 p-4 group transition-all duration-300 ease-in-out  dark:hover:border-primary/50">
+                                <summary class="flex cursor-pointer items-center justify-between gap-4 list-none">
+                                    <div class="flex items-center gap-4 flex-1">
+                                        <div class="flex-col">
+                                            <p
+                                                class="text-gray-900 dark:text-white text-base font-medium leading-normal">
+                                                Contractor (CN-001)</p>
+                                            <p class="text-gray-500 dark:text-gray-400 text-sm">Project-based contract
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center gap-3">
+                                        <div class="flex items-center gap-2">
+                                            <span
+                                                class="text-sm font-medium text-gray-500 dark:text-gray-400">Inactive</span>
+                                            <label class="relative inline-flex items-center cursor-pointer">
+                                                <input class="sr-only peer" type="checkbox" value="" />
+                                                <div
+                                                    class="w-11 h-6 bg-gray-200 dark:bg-gray-700 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary">
+                                                </div>
+                                            </label>
+                                        </div>
+                                        <button
+                                            class="p-2 rounded-full hover:bg-gray-500/10 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-300">
+                                            <i data-lucide="pencil" class="size-5"></i>
+                                        </button>
+                                        <button
+                                            class="p-2 rounded-full hover:bg-red-50 dark:hover:bg-red-900/50 text-red-600 dark:text-red-400">
+                                            <i data-lucide="trash-2" class="size-5"></i>
+                                        </button>
+                                        <div
+                                            class="text-gray-700 dark:text-gray-300 group-open:rotate-180 transition-transform duration-300">
+                                            <i data-lucide="chevron-down" class="size-5"></i>
+                                        </div>
+                                    </div>
+                                </summary>
+                                <div class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+                                    <p class="text-gray-500 dark:text-gray-400 text-sm font-normal leading-relaxed">This
+                                        category is for independent contractors hired for specific projects. The
+                                        description covers contract terms, payment schedules, and project deliverables.
+                                    </p>
+                                </div>
+                            </details>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+
+</html>

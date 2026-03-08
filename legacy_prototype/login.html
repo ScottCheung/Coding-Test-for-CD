@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Login - Leave Platform</title>
+    <!-- Fonts: Inter makes it look more modern/UI focused than Roboto -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            DEFAULT: "#0f4c81", // Classic Blue - calmer & more professional
+                            dark: "#0a365c",
+                            light: "#3a7bd5"
+                        },
+                        "background-light": "#f3f4f6",
+                        "background-dark": "#121212",
+                    },
+                    fontFamily: {
+                        sans: ["Inter", "sans-serif"], // Changed to Inter for a cleaner look
+                    },
+                    borderRadius: {
+                        'xl': '1rem',
+                        '2xl': '1.5rem',
+                        '3xl': '2rem',
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.8s ease-out forwards',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0', transform: 'translateY(10px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                },
+            },
+        };
+    </script>
+    <style>
+        /* Custom scrollbar for better aesthetics */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+
+<body
+    class="font-sans bg-gray-500/10 dark:bg-zinc-900 text-gray-800 dark:text-gray-200 antialiased selection:bg-primary selection:text-white">
+
+    <div class="flex w-full items-center justify-center min-h-screen p-4 sm:p-6 lg:p-8 relative">
+        <!-- Background decorative blob (optional, adds depth) -->
+        <div class="absolute top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
+            <div
+                class="absolute top-[-10%] left-[-10%] w-96 h-96 bg-blue-200/30 dark:bg-blue-900/20 rounded-full blur-3xl">
+            </div>
+            <div
+                class="absolute bottom-[-10%] right-[-10%] w-96 h-96 bg-purple-200/30 dark:bg-purple-900/20 rounded-full blur-3xl">
+            </div>
+        </div>
+
+        <div
+            class="grid grid-cols-1 md:grid-cols-2 max-w-[1100px] w-full lg:bg-white dark:bg-zinc-900 rounded-xl md:rounded-3xl lg:shadow-2xl overflow-hidden min-h-[600px] animate-fade-in lg:border lg:border-white/50 dark:border-zinc-800">
+
+            <!-- Left Side: Image & Brand -->
+            <!-- Using a high-quality Unsplash image of abstract architecture/lines for a 'Tech/Structure' feel -->
+            <div class="relative hidden md:flex flex-col justify-between p-12 text-white overflow-hidden group">
+                <!-- Image Background -->
+                <div class="absolute inset-0 z-0 transition-transform duration-1000 group-hover:scale-105">
+                    <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop"
+                        alt="Modern Building Background" class="w-full h-full object-cover" />
+                    <!-- Gradient Overlay for readability -->
+                    <div
+                        class="absolute inset-0 bg-gradient-to-t from-primary-dark/90 via-primary/80 to-primary-light/40 mix-blend-multiply">
+                    </div>
+                    <div class="absolute inset-0 bg-black/20"></div>
+                </div>
+
+                <!-- Content -->
+                <div class="relative z-10 flex items-center space-x-3">
+                    <div class="bg-white/20 backdrop-blur-sm p-2 hidden rounded-lg border border-white/30">
+                        <i data-lucide="settings" class="text-white size-6"></i>
+                    </div>
+                    <span class="text-lg font-semibold tracking-wide">Leave Platform</span>
+                </div>
+
+                <div class="relative z-10">
+                    <h2 class="text-3xl font-bold mb-4 leading-tight">Manage your world<br>with confidence.</h2>
+                    <p class="text-blue-100 text-sm font-light max-w-xs leading-relaxed">
+                        Access your dashboard to control settings, view analytics, and manage team permissions securely.
+                    </p>
+                </div>
+
+                <!-- Decorative subtle element -->
+                <div class="absolute bottom-0 right-0 p-12 opacity-10 pointer-events-none">
+                    <svg width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="0.5">
+                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Right Side: Form -->
+            <div class="w-full p-4 sm:p-12 lg:p-16 flex flex-col justify-center md:bg-white dark:bg-zinc-900 relative">
+                <div class="max-w-md w-full mx-auto">
+                    <div class="mb-10">
+                        <h2 class="text-3xl font-bold text-gray-900 dark:text-white tracking-tight">Welcome Back</h2>
+                        <p class="text-gray-500 dark:text-gray-400 mt-2 text-sm">Please enter your details to sign in.
+                        </p>
+                    </div>
+
+                    <form action="#" class="space-y-6" method="POST"
+                        onsubmit="event.preventDefault(); alert('Login logic here');">
+
+                        <!-- Username Input -->
+                        <div class="group">
+                            <label
+                                class="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2"
+                                for="username">Username or Email</label>
+                            <div class="relative transition-all duration-300">
+                                <span
+                                    class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors">
+                                    <i data-lucide="user" class="size-5"></i>
+                                </span>
+                                <!-- Changed: rounded-full, simplified focus to just border-primary with no ring -->
+                                <input
+                                    class="w-full pl-12 pr-4 py-3.5 bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-full focus:ring-0 focus:border-primary transition-colors duration-200 outline-none text-sm"
+                                    id="username" name="username" placeholder="Enter your username" type="text"
+                                    required />
+                            </div>
+                        </div>
+
+                        <!-- Password Input -->
+                        <div class="group">
+                            <div class="flex justify-between items-center mb-2">
+                                <label
+                                    class="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider"
+                                    for="password">Password</label>
+                                <a class="text-xs font-medium text-primary hover:text-primary-dark transition-colors"
+                                    href="#">Forgot Password?</a>
+                            </div>
+                            <div class="relative transition-all duration-300">
+                                <span
+                                    class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors">
+                                    <i data-lucide="lock" class="size-5"></i>
+                                </span>
+                                <!-- Changed: rounded-full, simplified focus to just border-primary with no ring -->
+                                <input
+                                    class="w-full pl-12 pr-12 py-3.5 bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-full focus:ring-0 focus:border-primary transition-colors duration-200 outline-none text-sm"
+                                    id="password" name="password" placeholder="••••••••" type="password" required />
+                                <button
+                                    class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 focus:outline-none"
+                                    type="button" onclick="togglePassword()">
+                                    <i data-lucide="eye-off" id="eye-icon" class="size-5"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Error Message Placeholder (Hidden by default) -->
+                        <div class="hidden items-center p-3 text-red-600 bg-red-50 rounded-lg text-xs">
+                            <i data-lucide="alert-circle" class="mr-2 size-4"></i>
+                            Invalid username or password.
+                        </div>
+
+                        <!-- Submit Button -->
+                        <!-- Changed: rounded-full -->
+                        <button
+                            class="w-full bg-gradient-to-r from-primary-dark to-primary text-white font-bold py-3.5 px-4 rounded-full shadow-lg shadow-primary/30  hover:scale-[1.01] active:scale-[0.98] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+                            type="submit">
+                            Sign In
+                        </button>
+                    </form>
+
+                    <div class="mt-8 pt-6 border-t border-gray-100 dark:border-zinc-800 text-center">
+                        <p class="text-sm text-gray-500 dark:text-gray-400">
+                            Don't have an account? <a
+                                class="font-semibold text-primary hover:text-primary-dark transition-colors"
+                                href="#">Create free account</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer
+            class="absolute bottom-4 text-center w-full text-xs text-gray-400 dark:text-gray-600 pointer-events-none hidden md:block">
+            &copy; 2025 Leave Platform Inc. All rights reserved.
+        </footer>
+    </div>
+
+    <!-- Script to toggle password visibility -->
+    <script>
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const eyeIcon = document.getElementById('eye-icon');
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                // Lucide icons are SVGs, so we need to replace the icon attribute
+                eyeIcon.setAttribute('data-lucide', 'eye');
+            } else {
+                passwordInput.type = 'password';
+                eyeIcon.setAttribute('data-lucide', 'eye-off');
+            }
+            lucide.createIcons();
+        }
+        lucide.createIcons();
+    </script>
+</body>
+
+</html>

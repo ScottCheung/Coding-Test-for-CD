@@ -1,0 +1,92 @@
+[
+  {
+    "code": "CARL",
+    "name": "Carlton",
+    "description": "The Carlton Football Club, nicknamed the Blues, is based in Melbourne and is one of the oldest and most successful clubs in the AFL, having won 16 VFL/AFL premierships."
+  },
+  {
+    "code": "RICH",
+    "name": "Richmond",
+    "description": "The Richmond Football Club, nicknamed the Tigers, is a powerhouse club based at Punt Road Oval. They have a massive supporter base and multiple recent premierships."
+  },
+  {
+    "code": "COLL",
+    "name": "Collingwood",
+    "description": "The Collingwood Football Club, the Magpies, is traditionally one of the biggest and most deeply supported (and rivalled) clubs in the AFL, renowned for their black and white stripes."
+  },
+  {
+    "code": "GEEL",
+    "name": "Geelong Cats",
+    "description": "Based in the regional city of Geelong, the Cats have a long history of sustained success and home dominance at GMHBA Stadium."
+  },
+  {
+    "code": "MELB",
+    "name": "Melbourne",
+    "description": "The Melbourne Football Club, known as the Demons, is the world's oldest professional club of any football code, playing their home games at the iconic MCG."
+  },
+  {
+    "code": "PA",
+    "name": "Port Adelaide",
+    "description": "The Port Adelaide Football Club, the Power, has a rich heritage rooted in the SANFL before joining the AFL in 1997, boasting fierce hometown pride."
+  },
+  {
+    "code": "ADEL",
+    "name": "Adelaide Crows",
+    "description": "The Adelaide Football Club, or Crows, was formed in 1990 as the first South Australian team in the AFL, winning back-to-back premierships in the late 90s."
+  },
+  {
+    "code": "HAW",
+    "name": "Hawthorn",
+    "description": "The Hawthorn Football Club, the Hawks, dominated several eras of modern football, famous for their brown and gold stripes and \"family club\" ethos."
+  },
+  {
+    "code": "WB",
+    "name": "Western Bulldogs",
+    "description": "The Western Bulldogs (formerly Footscray) hail from Melbourne's working-class western suburbs and famously broke a 62-year premiership drought in 2016."
+  },
+  {
+    "code": "SYD",
+    "name": "Sydney Swans",
+    "description": "Originally from South Melbourne, the Swans relocated to Sydney in the 1980s and established themselves as a remarkably consistent and deeply respected club."
+  },
+  {
+    "code": "BL",
+    "name": "Brisbane Lions",
+    "description": "Formed from a merger between the Brisbane Bears and Fitzroy Lions, this club achieved a historic three-peat of premierships in the early 2000s."
+  },
+  {
+    "code": "WCE",
+    "name": "West Coast Eagles",
+    "description": "Based in Perth, the West Coast Eagles were a pioneering force for the AFL's national expansion, commanding huge crowds and winning multiple flags."
+  },
+  {
+    "code": "STK",
+    "name": "St Kilda",
+    "description": "The St Kilda Football Club, the Saints, is defined by its passionate bayside fan base and iconic red, white, and black tri-colors."
+  },
+  {
+    "code": "GCS",
+    "name": "Gold Coast SUNS",
+    "description": "The Gold Coast SUNS are one of the AFL's newer franchises, bringing top-flight football to the sunny tourist strip of Queensland."
+  },
+  {
+    "code": "GWS",
+    "name": "GWS GIANTS",
+    "description": "The Greater Western Sydney GIANTS represent Western Sydney and the ACT. Despite being a modern expansion team, they quickly built a formidable and exciting brand."
+  },
+  {
+    "code": "ESS",
+    "name": "Essendon",
+    "description": "The Essendon Football Club, the Bombers, is one of the AFL's grand old clubs, sharing the record for the most VFL/AFL premierships (16)."
+  },
+  {
+    "code": "FREM",
+    "name": "Fremantle",
+    "description": "The Fremantle Dockers joined the AFL in 1995, representing the proud port city in Western Australia with a fiercely loyal local following."
+  },
+  {
+    "code": "NM",
+    "name": "North Melbourne",
+    "description": "The North Melbourne Football Club, the Kangaroos, is known for its \"Shinboner Spirit\"—a legacy of grit, determination, and working-class resilience."
+  }
+]

@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Account Management</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+
+    <style>
+        /* Custom scrollbar to match the login page */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 999px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        /* Smooth transitions */
+        * {
+            transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform;
+            transition-duration: 200ms;
+        }
+    </style>
+
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        // Matching the Login Page Blue
+                        primary: {
+                            DEFAULT: "#0f4c81",
+                            dark: "#0a365c",
+                            light: "#3a7bd5",
+                            subtle: "#e0eaf5" // For backgrounds of active items
+                        },
+                        "background-light": "#f3f4f6", // Matches Login
+                        "background-dark": "#121212",  // Matches Login
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "xl": "1rem",
+                        "2xl": "1.5rem",
+                        "3xl": "2rem",
+                        "full": "9999px" // As requested
+                    },
+                    boxShadow: {
+                        'soft': '0 4px 20px -2px rgba(0, 0, 0, 0.05)',
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+
+<body
+    class="bg-background-light dark:bg-background-dark font-display text-gray-800 dark:text-gray-200 antialiased selection:bg-primary selection:text-white">
+
+    <div class="relative flex min-h-screen w-full flex-col group/design-root overflow-x-hidden">
+        <div class="flex flex-row min-h-screen">
+
+            <!-- SideNavBar -->
+            <aside
+                class="w-72 flex-shrink-0 bg-white dark:bg-zinc-900 p-6 flex flex-col justify-between border-r border-gray-100 dark:border-zinc-800 hidden lg:flex h-screen z-10 fixed">
+                <div class="flex flex-col gap-10">
+                    <!-- Brand -->
+                    <div class="flex gap-4 items-center px-2">
+                        <div class="flex items-center justify-center size-10 rounded-xl bg-primary text-white">
+                            <i data-lucide="layout-grid" class="size-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <h1 class="text-gray-900 dark:text-white text-lg font-bold leading-none tracking-tight">
+                                Admin Portal</h1>
+                            <p class="text-gray-400 dark:text-gray-500 text-xs font-medium mt-1">Employment Types System
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Navigation -->
+                    <nav class="flex flex-col gap-1">
+                        <!-- Inactive Item -->
+                        <a class="flex items-center gap-3 px-4 py-2 rounded-full hover:bg-gray-50 dark:hover:bg-zinc-800 text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-all group"
+                            href="./dashboard.html">
+                            <i data-lucide="layout-dashboard" class="size-5"></i>
+                            <p class="text-sm font-medium">Dashboard</p>
+                        </a>
+
+                        <!-- Active Item: Uses Primary color + Subtle background + Full Round -->
+                        <a class="flex items-center gap-3 px-4 py-2 rounded-full bg-primary/10 text-primary dark:bg-primary/20 dark:text-blue-200 transition-all"
+                            href="./accounts.html">
+                            <i data-lucide="users" class="size-5"></i>
+                            <p class="text-sm font-bold">Accounts</p>
+                        </a>
+
+                        <a class="flex items-center gap-3 px-4 py-2 rounded-full hover:bg-gray-50 dark:hover:bg-zinc-800 text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-all group"
+                            href="">
+                            <i data-lucide="calendar" class="size-5"></i>
+                            <p class="text-sm font-medium">Employment Types</p>
+                        </a>
+                        <a class="flex items-center gap-3 px-4 py-2 rounded-full hover:bg-gray-50 dark:hover:bg-zinc-800 text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-all group"
+                            href="#">
+                            <i data-lucide="settings" class="size-5"></i>
+                            <p class="text-sm font-medium">Leave Types</p>
+                        </a>
+                        <a class="flex items-center gap-3 px-4 py-2 rounded-full hover:bg-gray-50 dark:hover:bg-zinc-800 text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-all group"
+                            href="#">
+                            <i data-lucide="settings-2" class="size-5"></i>
+                            <p class="text-sm font-medium">Leave Rules</p>
+                        </a>
+                        <a class="flex items-center gap-3 px-4 py-2 rounded-full hover:bg-gray-50 dark:hover:bg-zinc-800 text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-all group"
+                            href="./helpCenter.html">
+                            <i data-lucide="circle-help" class="size-5"></i>
+                            <p class="text-sm font-medium">Help &amp; Support</p>
+                        </a>
+
+                    </nav>
+                </div>
+
+                <!-- Footer Nav -->
+                <div>
+
+                    <div class="flex flex gap-3 ">
+                        <div
+                            class="size-12 rounded-full overflow-hidden border-2 border-white dark:border-zinc-800 cursor-pointer hover:scale-105 transition-transform">
+                            <img src="https://media.licdn.com/dms/image/v2/C4E0BAQG0sUKoTGt7gQ/company-logo_100_100/company-logo_100_100/0/1630605791837?e=1766016000&v=beta&t=7ZQBJ5PvGvzlQbGQEA-LTmVi0OMHRL1gafacOfZa35E"
+                                alt="Avatar" class="w-full h-full object-cover">
+                        </div>
+                        <a class="flex items-center gap-3 px-4 py-3 rounded-full hover:bg-red-50 dark:hover:bg-red-900/10 text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400 transition-all"
+                            href="#">
+                            <i data-lucide="log-out" class="size-4"></i>
+                            <p class="text-sm font-medium">Log Out</p>
+                        </a>
+                    </div>
+
+                </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="flex-1 p-6 lg:p-10 lg:ml-72 w-full">
+                <div class="mx-auto max-w-7xl">
+
+                    <!-- PageHeading -->
+                    <div class="flex flex-wrap justify-between gap-4 mb-10 items-center">
+                        <div class="flex min-w-72 flex-col gap-1">
+                            <h1 class="text-gray-900 dark:text-white text-3xl md:text-4xl font-bold tracking-tight">
+                                Account Management</h1>
+                            <p class="text-gray-500 dark:text-gray-400 text-sm md:text-base">Manage your organization's
+                                accounts and access.</p>
+                        </div>
+                        <button
+                            class="flex items-center justify-center gap-2 h-12 px-6 rounded-full bg-gradient-to-r from-primary-dark to-primary text-white text-sm font-bold hover:-translate-y-0.5 transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary shadow-soft">
+                            <i data-lucide="plus" class="size-5"></i>
+                            <span>New Account</span>
+                        </button>
+                    </div>
+
+                    <!-- Toolbar -->
+                    <div class="flex flex-col lg:flex-row gap-4 mb-8 justify-between items-start lg:items-center">
+                        <!-- Search -->
+                        <div class="relative w-full lg:w-96 group">
+                            <div
+                                class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400 group-focus-within:text-primary transition-colors">
+                                <i data-lucide="search" class="size-5"></i>
+                            </div>
+                            <input type="text"
+                                class="block w-full pl-11 pr-4 py-3 rounded-full border-none bg-white dark:bg-zinc-900 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-primary/20 focus:bg-white dark:focus:bg-zinc-900 transition-all shadow-sm"
+                                placeholder="Search by Code or Name...">
+                        </div>
+
+                        <!-- Filters -->
+                        <div class="flex flex-wrap items-center gap-3">
+                            <button
+                                class="flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary dark:bg-primary/20 dark:text-blue-200 text-sm font-bold transition-all">
+                                <span>All</span>
+                            </button>
+                            <button
+                                class="flex items-center gap-2 px-4 py-2 rounded-full bg-white dark:bg-zinc-900 text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-zinc-800 text-sm font-medium transition-all border border-gray-100 dark:border-zinc-800">
+                                <span>Active</span>
+                            </button>
+                            <button
+                                class="flex items-center gap-2 px-4 py-2 rounded-full bg-white dark:bg-zinc-900 text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-zinc-800 text-sm font-medium transition-all border border-gray-100 dark:border-zinc-800">
+                                <span>Inactive</span>
+                            </button>
+                            <div class="w-px h-6 bg-gray-200 dark:bg-zinc-700 mx-1"></div>
+                            <button
+                                class="flex items-center justify-center size-10 rounded-full bg-white dark:bg-zinc-900 text-gray-500 dark:text-gray-400 hover:text-primary dark:hover:text-blue-200 border border-gray-100 dark:border-zinc-800 transition-all">
+                                <i data-lucide="filter" class="size-5"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Accounts Grid -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                        <!-- Card 1: Active -->
+                        <div
+                            class="group relative flex flex-col gap-4 rounded-3xl p-6 bg-white dark:bg-zinc-900 border border-gray-100 dark:border-zinc-800 hover:shadow-soft transition-all cursor-pointer">
+                            <div class="flex items-center justify-between">
+                                <span
+                                    class="text-xs font-bold text-gray-400 dark:text-gray-500 tracking-wider">ACC-001</span>
+                                <button
+                                    class="p-2 -mr-2 rounded-full text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-50 dark:hover:bg-zinc-800 transition-colors">
+                                    <i data-lucide="more-horizontal" class="size-5"></i>
+                                </button>
+                            </div>
+                            <div>
+                                <h3
+                                    class="text-lg font-bold text-gray-900 dark:text-white group-hover:text-primary transition-colors">
+                                    Innovate Solutions</h3>
+                                <div class="flex items-center gap-2 mt-3">
+                                    <span
+                                        class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-green-500/10 text-green-600 dark:bg-green-900/20 dark:text-green-400">
+                                        <span class="size-1.5 rounded-full bg-green-500/100"></span>
+                                        Active
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 2: Inactive -->
+                        <div
+                            class="group relative flex flex-col gap-4 rounded-3xl p-6 bg-white dark:bg-zinc-900 border border-gray-100 dark:border-zinc-800 hover:shadow-soft transition-all cursor-pointer">
+                            <div class="flex items-center justify-between">
+                                <span
+                                    class="text-xs font-bold text-gray-400 dark:text-gray-500 tracking-wider">ACC-002</span>
+                                <button
+                                    class="p-2 -mr-2 rounded-full text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-50 dark:hover:bg-zinc-800 transition-colors">
+                                    <i data-lucide="more-horizontal" class="size-5"></i>
+                                </button>
+                            </div>
+                            <div>
+                                <h3
+                                    class="text-lg font-bold text-gray-900 dark:text-white group-hover:text-primary transition-colors">
+                                    Quantum Dynamics</h3>
+                                <div class="flex items-center gap-2 mt-3">
+                                    <span
+                                        class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-gray-500/10 text-gray-600 dark:bg-zinc-800 dark:text-gray-400">
+                                        <span class="size-1.5 rounded-full bg-gray-500"></span>
+                                        Inactive
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 3: Active -->
+                        <div
+                            class="group relative flex flex-col gap-4 rounded-3xl p-6 bg-white dark:bg-zinc-900 border border-gray-100 dark:border-zinc-800 hover:shadow-soft transition-all cursor-pointer">
+                            <div class="flex items-center justify-between">
+                                <span
+                                    class="text-xs font-bold text-gray-400 dark:text-gray-500 tracking-wider">ACC-003</span>
+                                <button
+                                    class="p-2 -mr-2 rounded-full text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-50 dark:hover:bg-zinc-800 transition-colors">
+                                    <i data-lucide="more-horizontal" class="size-5"></i>
+                                </button>
+                            </div>
+                            <div>
+                                <h3
+                                    class="text-lg font-bold text-gray-900 dark:text-white group-hover:text-primary transition-colors">
+                                    Stellar Corp</h3>
+                                <div class="flex items-center gap-2 mt-3">
+                                    <span
+                                        class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-green-500/10 text-green-600 dark:bg-green-900/20 dark:text-green-400">
+                                        <span class="size-1.5 rounded-full bg-green-500/100"></span>
+                                        Active
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 4: Active -->
+                        <div
+                            class="group relative flex flex-col gap-4 rounded-3xl p-6 bg-white dark:bg-zinc-900 border border-gray-100 dark:border-zinc-800 hover:shadow-soft transition-all cursor-pointer">
+                            <div class="flex items-center justify-between">
+                                <span
+                                    class="text-xs font-bold text-gray-400 dark:text-gray-500 tracking-wider">ACC-004</span>
+                                <button
+                                    class="p-2 -mr-2 rounded-full text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-50 dark:hover:bg-zinc-800 transition-colors">
+                                    <i data-lucide="more-horizontal" class="size-5"></i>
+                                </button>
+                            </div>
+                            <div>
+                                <h3
+                                    class="text-lg font-bold text-gray-900 dark:text-white group-hover:text-primary transition-colors">
+                                    Apex Industries</h3>
+                                <div class="flex items-center gap-2 mt-3">
+                                    <span
+                                        class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-green-500/10 text-green-600 dark:bg-green-900/20 dark:text-green-400">
+                                        <span class="size-1.5 rounded-full bg-green-500/100"></span>
+                                        Active
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 5: Inactive -->
+                        <div
+                            class="group relative flex flex-col gap-4 rounded-3xl p-6 bg-white dark:bg-zinc-900 border border-gray-100 dark:border-zinc-800 hover:shadow-soft transition-all cursor-pointer">
+                            <div class="flex items-center justify-between">
+                                <span
+                                    class="text-xs font-bold text-gray-400 dark:text-gray-500 tracking-wider">ACC-005</span>
+                                <button
+                                    class="p-2 -mr-2 rounded-full text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-50 dark:hover:bg-zinc-800 transition-colors">
+                                    <i data-lucide="more-horizontal" class="size-5"></i>
+                                </button>
+                            </div>
+                            <div>
+                                <h3
+                                    class="text-lg font-bold text-gray-900 dark:text-white group-hover:text-primary transition-colors">
+                                    Legacy Systems</h3>
+                                <div class="flex items-center gap-2 mt-3">
+                                    <span
+                                        class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-gray-500/10 text-gray-600 dark:bg-zinc-800 dark:text-gray-400">
+                                        <span class="size-1.5 rounded-full bg-gray-500"></span>
+                                        Inactive
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- New Card Placeholder (Optional, for visual balance) -->
+                        <div
+                            class="group relative flex flex-col items-center justify-center gap-2 rounded-3xl p-6 bg-gray-50 dark:bg-zinc-800/50 border border-dashed border-gray-300 dark:border-zinc-700 hover:bg-gray-500/10 dark:hover:bg-zinc-800 transition-all cursor-pointer min-h-[160px]">
+                            <div
+                                class="size-12 rounded-full bg-white dark:bg-zinc-900 flex items-center justify-center text-gray-400 group-hover:text-primary transition-colors shadow-sm">
+                                <i data-lucide="plus" class="size-6"></i>
+                            </div>
+                            <p class="text-sm font-bold text-gray-500 dark:text-gray-400 group-hover:text-primary">Add
+                                Account</p>
+                        </div>
+
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+
+</html>
