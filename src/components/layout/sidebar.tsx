@@ -57,9 +57,10 @@ import { div } from 'framer-motion/client';
 
 export const Sidebar = memo(function Sidebar() {
   const pathname = usePathname();
-  // 优化 Zustand selector - 只订阅需要的状态
+  // 优化 Zustand selector -
   const isCollapsed = useLayoutStore((state) => state.isSidebarCollapsed);
   const toggleSidebar = useLayoutStore((state) => state.actions.toggleSidebar);
+  const setSidebarCollapsed = useLayoutStore((state) => state.actions.setSidebarCollapsed);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
 
   // Close mobile menu when route changes
@@ -270,7 +271,12 @@ export const Sidebar = memo(function Sidebar() {
     <>
       {/* Mobile Menu Button */}
       <button
-        onClick={() => setIsMobileOpen(true)}
+        onClick={() => {
+          setIsMobileOpen(true);
+          if (isCollapsed) {
+            setSidebarCollapsed(false);
+          }
+        }}
         className='fixed bottom-1/4 -left-4 z-50 flex lg:hidden items-center justify-center size-12 rounded-xl bg-panel border border-black/5 dark:border-white/5 shadow-lg text-ink-primary hover:bg-primary hover:text-white transition-all'
         aria-label='Open menu'
       >

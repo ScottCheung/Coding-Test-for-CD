@@ -196,6 +196,7 @@ export const MatchCard = memo(function MatchCard({
             isComplete={isComplete}
             align={layout ? 'center' : 'right'}
             layout={layout}
+            reverse={layout}
           />
         : <div
             className={cn(
