@@ -70,7 +70,7 @@ const renderCustomizedLabel = ({
         textAnchor={x > cx ? 'start' : 'end'}
         dominantBaseline='central'
         className='text-xs font-bold'
-        stroke='white'
+        stroke='var(--color-panel)'
         strokeWidth='4'
         paintOrder='stroke'
       >

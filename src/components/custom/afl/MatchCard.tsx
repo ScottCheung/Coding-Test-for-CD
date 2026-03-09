@@ -5,16 +5,10 @@
 import { memo } from 'react';
 import type { AflMatch } from '@/types/afl';
 import { cn } from '@/lib/utils';
-import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc';
-import timezone from 'dayjs/plugin/timezone';
 
 import { MatchStatusBadge } from './MatchStatusBadge';
 import { TeamDisplay } from './TeamDisplay';
 import { MatchMetaInfo } from './MatchMetaInfo';
-
-dayjs.extend(utc);
-dayjs.extend(timezone);
 
 interface MatchCardProps {
   match: AflMatch & { roundCode: string };
@@ -23,49 +17,83 @@ interface MatchCardProps {
   layout?: boolean;
 }
 
+// 简化的时间格式化函数，避免使用 dayjs 插件
+function formatDateTime(utcString: string, timeZone?: string) {
+  try {
+    const date = new Date(utcString);
+    if (isNaN(date.getTime())) {
+      return { formattedDate: null, formattedTime: null };
+    }
+
+    // 使用原生 Intl API，更安全且兼容性更好
+    const dateOptions: Intl.DateTimeFormatOptions = {
+      weekday: 'short',
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric',
+      timeZone: timeZone || undefined,
+    };
+
+    const timeOptions: Intl.DateTimeFormatOptions = {
+      hour: 'numeric',
+      minute: '2-digit',
+      timeZoneName: 'short',
+      timeZone: timeZone || undefined,
+    };
+
+    const formattedDate = new Intl.DateTimeFormat('en-AU', dateOptions).format(date);
+    const formattedTime = new Intl.DateTimeFormat('en-AU', timeOptions).format(date);
+
+    return { formattedDate, formattedTime };
+  } catch (error) {
+    console.warn('Error formatting date:', error);
+    return { formattedDate: null, formattedTime: null };
+  }
+}
+
 export const MatchCard = memo(function MatchCard({
   match,
   className,
   visibility,
   layout,
 }: MatchCardProps) {
-  const { squads, date, venue, status } = match;
+  // Safely extract match data with fallbacks
+  const squads = match?.squads;
+  const date = match?.date;
+  const venue = match?.venue;
+  const status = match?.status;
+
   const home = squads?.home;
   const away = squads?.away;
   const isComplete = status?.code === 'COMP';
-  const homeScorePoints = home?.score?.points ?? 0;
-  const awayScorePoints = away?.score?.points ?? 0;
+  const homeScorePoints =
+    typeof home?.score?.points === 'number' ? home.score.points : 0;
+  const awayScorePoints =
+    typeof away?.score?.points === 'number' ? away.score.points : 0;
   const homeWin =
     isComplete && home && away && homeScorePoints > awayScorePoints;
   const awayWin =
     isComplete && home && away && awayScorePoints > homeScorePoints;
 
-  // Time handling
+  // Time handling with native API - 更安全，不会导致移动端崩溃
+  let formattedDate = null;
+  let formattedTime = null;
   let localTime = null;
-  if (date?.utcMatchStart) {
-    localTime = dayjs(date.utcMatchStart);
-    if (venue?.timeZone) {
-      try {
-        // iOS Safari and other mobile browsers might throw RangeError if timezone string is unsupported
-        localTime = dayjs(date.utcMatchStart).tz(venue.timeZone);
-      } catch (e) {
-        console.warn(
-          'Unsupported timezone string on this browser:',
-          venue.timeZone,
-        );
-        localTime = dayjs(date.utcMatchStart);
-      }
-    }
-  }
 
-  const formattedDate = localTime ? localTime.format('ddd D MMM YYYY') : null;
-  const formattedTime = localTime ? localTime.format('h:mm A z') : null;
+  if (date?.utcMatchStart) {
+    const result = formatDateTime(date.utcMatchStart, venue?.timeZone);
+    formattedDate = result.formattedDate;
+    formattedTime = result.formattedTime;
+    localTime = result.formattedDate ? new Date(date.utcMatchStart) : null;
+  }
 
   // Check if match details are incomplete
   const isTBD = !home || !away || !localTime;
-  const hasVenue = venue?.name && venue.name.trim() !== '';
+  const hasVenue = Boolean(
+    venue?.name && typeof venue.name === 'string' && venue.name.trim() !== '',
+  );
 
-  // Visibility logic
+  // Visibility logic with safe defaults
   const vis = visibility || {};
   const showName = vis.name !== false;
   const showScore = vis.score !== false;
@@ -87,7 +115,7 @@ export const MatchCard = memo(function MatchCard({
         statusName={status?.name || ''}
         statusCode={status?.code || ''}
         showStatus={showStatus}
-        roundCode={match.roundCode}
+        roundCode={match?.roundCode || ''}
         showRoundCode={showRoundCode}
       />
 
