@@ -10,7 +10,7 @@ import { usePreferencesActions } from '@/lib/store/preferences-store';
 
 interface MatchesViewProps {
   viewMode: 'card' | 'table';
-  matches: AflMatch[];
+  matches: (AflMatch & { roundCode: string })[];
   columnVisibility: Record<string, boolean>;
   columnOrder: string[];
 }

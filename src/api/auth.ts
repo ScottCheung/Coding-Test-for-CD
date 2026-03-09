@@ -1,4 +1,4 @@
-import { api } from '@/lib/api';
+// 认证功能已禁用
 
 export interface LoginResponse {
     access_token: string;
@@ -12,11 +12,9 @@ export interface User {
 }
 
 export const login = async (credentials: FormData | { [key: string]: string }) => {
-    const response = await api.post<LoginResponse>('/api/auth/login', credentials);
-    return response.data;
+    throw new Error('Authentication is disabled');
 };
 
 export const getMe = async () => {
-    const response = await api.get<User>('/api/auth/me');
-    return response.data;
+    throw new Error('Authentication is disabled');
 };

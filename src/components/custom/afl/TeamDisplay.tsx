@@ -57,11 +57,12 @@ export function TeamDisplay({
         >
           {isWinner && (
             <div className='group-hover:opacity-100 max-size-20 opacity-0 absolute  right-1 top-0  transition-all duration-700 z-20 group-hover:-top-[30px] animate-bounce'>
-              <Image 
-                src='/crown.png' 
+              <Image
+                src='/crown.png'
                 alt='crown'
                 width={80}
                 height={80}
+                loading='eager'
                 className='size-full object-contain'
               />
             </div>

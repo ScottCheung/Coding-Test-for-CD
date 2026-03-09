@@ -5,7 +5,7 @@ import type { AflMatch } from '@/types/afl';
 import dayjs from 'dayjs';
 
 interface UseFilteredMatchesProps {
-  allMatches: AflMatch[];
+  allMatches: (AflMatch & { roundCode: string })[];
   debouncedSearch: string;
   selectedRounds: string[];
   selectedVenues: string[];
@@ -20,7 +20,7 @@ export function useFilteredMatches({
   selectedVenues,
   selectedTeams,
   sortConfig,
-}: UseFilteredMatchesProps) {
+}: UseFilteredMatchesProps): (AflMatch & { roundCode: string })[] {
   return useMemo(() => {
     let result = allMatches;
 

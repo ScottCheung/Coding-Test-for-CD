@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { getMe } from '@/api/auth';
+// 认证功能已禁用
+// import { getMe } from '@/api/auth';
 
 interface User {
     userId: string;
@@ -35,8 +36,8 @@ export const useAuthStore = create<AuthState>()(
                     rememberMe,
                     loginTime: Date.now() // Record login time
                 });
-                // Fetch user details after login
-                get().fetchMe();
+                // 认证功能已禁用 - 不再调用 fetchMe
+                // get().fetchMe();
             },
             logout: () => {
                 set({ user: null, token: null, loginTime: null });
@@ -46,15 +47,18 @@ export const useAuthStore = create<AuthState>()(
                 }
             },
             fetchMe: async () => {
-                try {
-                    const user = await getMe();
-                    set({ user });
-                } catch (error: any) {
-                    if (error?.response?.status !== 401) {
-                        console.error('Failed to fetch user', error);
-                    }
-                    // If 401, the interceptor will handle logout
-                }
+                // 认证功能已禁用
+                console.warn('Authentication is disabled - fetchMe() does nothing');
+                return;
+                // try {
+                //     const user = await getMe();
+                //     set({ user });
+                // } catch (error: any) {
+                //     if (error?.response?.status !== 401) {
+                //         console.error('Failed to fetch user', error);
+                //     }
+                //     // If 401, the interceptor will handle logout
+                // }
             },
             setRememberMe: (remember) => set({ rememberMe: remember }),
             isTokenExpired: () => {

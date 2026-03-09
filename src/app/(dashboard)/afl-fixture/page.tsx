@@ -6,20 +6,24 @@ import React, { useState, useEffect } from 'react';
 import { useAflFixture } from '@/hooks/useAflFixture';
 import { useLayoutStore } from '@/lib/store/layout-store';
 import { useSearch } from '@/hooks/use-search';
-import { usePreferencesStore, usePreferencesActions } from '@/lib/store/preferences-store';
-import { columns } from './columns';
-import { AflFilterSort } from './FilterSort';
-import { AflViewSettings } from './ViewSettings';
-import { ResultsHeader } from './ResultsHeader';
-import { EmptyState } from './EmptyState';
-import { LoadingState } from './LoadingState';
-import { ErrorState } from './ErrorState';
-import { MatchesView } from './MatchesView';
-import { useFilteredMatches } from './hooks/useFilteredMatches.tsx';
-import { useFixtureHeader } from './hooks/useFixtureHeader.tsx';
+import {
+  usePreferencesStore,
+  usePreferencesActions,
+} from '@/lib/store/preferences-store';
+import { columns } from './_component/columns';
+import { AflFilterSort } from './_component/FilterSort';
+import { AflViewSettings } from './_component/ViewSettings';
+import { ResultsHeader } from './_component/ResultsHeader';
+import { EmptyState } from './_component/EmptyState';
+import { LoadingState } from './_component/LoadingState';
+import { ErrorState } from './_component/ErrorState';
+import { MatchesView } from './_component/MatchesView';
+import { useFilteredMatches } from './hooks/useFilteredMatches';
+import { useFixtureHeader } from './hooks/useFixtureHeader';
 
 export default function AflFixturePage() {
-  const { allMatches, roundCodes, venues, teams, isLoading, isError, error } = useAflFixture();
+  const { allMatches, roundCodes, venues, teams, isLoading, isError, error } =
+    useAflFixture();
   const viewMode = usePreferencesStore((state) => state.viewMode);
   const { setColumnSettings } = usePreferencesActions();
 
@@ -32,7 +36,12 @@ export default function AflFixturePage() {
   } | null>(null);
 
   const searchHook = useSearch();
-  const { value: search, onChange, debouncedValue: debouncedSearch, isDebouncing } = searchHook;
+  const {
+    value: search,
+    onChange,
+    debouncedValue: debouncedSearch,
+    isDebouncing,
+  } = searchHook;
 
   const isDrawerOpen = useLayoutStore((state) => state.isDrawerOpen);
   const drawerTitle = useLayoutStore((state) => state.drawerConfig.title);
@@ -41,7 +50,8 @@ export default function AflFixturePage() {
   const isFilterOpen = isDrawerOpen && drawerTitle === 'Filter & Sort';
   const isSettingsOpen = isDrawerOpen && drawerTitle === 'View Settings';
 
-  const columnSettings = usePreferencesStore((state) => state.columnSettings['afl-fixture']) || {};
+  const columnSettings =
+    usePreferencesStore((state) => state.columnSettings['afl-fixture']) || {};
   const columnVisibility = columnSettings.visibility || {};
   const columnOrder = columnSettings.order || [];
 
@@ -120,7 +130,8 @@ export default function AflFixturePage() {
     });
   };
 
-  const activeFiltersCount = selectedRounds.length + selectedVenues.length + selectedTeams.length;
+  const activeFiltersCount =
+    selectedRounds.length + selectedVenues.length + selectedTeams.length;
 
   // Update header
   useFixtureHeader({
@@ -172,16 +183,14 @@ export default function AflFixturePage() {
         onClearFilters={handleClearFilters}
       />
 
-      {filteredMatches.length > 0 ? (
+      {filteredMatches.length > 0 ?
         <MatchesView
-          viewMode={viewMode}
+          viewMode={viewMode === 'chart' ? 'card' : viewMode}
           matches={filteredMatches}
           columnVisibility={columnVisibility}
           columnOrder={columnOrder}
         />
-      ) : (
-        <EmptyState onClearFilters={handleClearFilters} />
-      )}
+      : <EmptyState onClearFilters={handleClearFilters} />}
     </div>
   );
 }

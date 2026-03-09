@@ -40,7 +40,8 @@ const navigation = [
   { name: 'AFL Fixture', href: '/afl-fixture', icon: Trophy },
 ];
 
-import { useAuthStore } from '@/lib/store';
+// 认证功能已禁用
+// import { useAuthStore } from '@/lib/store';
 import { useLayoutStore } from '@/lib/store/layout-store';
 import { useEffect, useState } from 'react';
 
@@ -56,7 +57,10 @@ import { div } from 'framer-motion/client';
 
 export const Sidebar = memo(function Sidebar() {
   const pathname = usePathname();
-  const { user, fetchMe, logout } = useAuthStore();
+  // 认证功能已禁用
+  // const { user, fetchMe, logout } = useAuthStore();
+  const user = null; // 临时占位
+  const logout = () => {}; // 临时占位
   const isCollapsed = useLayoutStore((state) => state.isSidebarCollapsed);
   const { toggleSidebar } = useLayoutStore((state) => state.actions);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
@@ -65,10 +69,11 @@ export const Sidebar = memo(function Sidebar() {
 
   useEffect(() => {
     setMounted(true);
-    if (!user) {
-      fetchMe();
-    }
-  }, [user, fetchMe]);
+    // 认证功能已禁用 - 不再调用 fetchMe
+    // if (!user) {
+    //   fetchMe();
+    // }
+  }, []);
 
   // Close mobile menu when route changes
   useEffect(() => {
