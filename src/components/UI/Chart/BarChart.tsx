@@ -122,7 +122,7 @@ const BarChart = ({
             className='text-xs text-ink-secondary'
             tickLine={false}
             axisLine={false}
-            // tick={{ fill: 'var(--muted-foreground)' }}
+            // tick={{ fill: 'var(--color-ink-secondary)' }}
           />
         )}
         {showYAxis && (
@@ -130,7 +130,7 @@ const BarChart = ({
             className='text-xs text-ink-secondary'
             tickLine={false}
             axisLine={false}
-            // tick={{ fill: 'var(--muted-foreground)' }}
+            // tick={{ fill: 'var(--color-ink-secondary)' }}
             domain={[
               (dataMin: number) => Math.floor(dataMin * 0.7),
               (dataMax: number) => Math.ceil(dataMax * 1.1),
@@ -140,7 +140,7 @@ const BarChart = ({
         <Tooltip
           content={<ChartTooltip ValueProps={ValueProps} />}
           cursor={{
-            fill: 'var(--muted-foreground)',
+            fill: 'var(--color-ink-secondary)',
             fillOpacity: 0.05,
           }}
         />

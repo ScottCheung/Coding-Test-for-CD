@@ -40,7 +40,7 @@ export const ChartTooltip: React.FC<ChartTooltipProps> = ({
     const displayLabel = label != null ? String(label) : null; // Use the Recharts label as the title
 
     return (
-      <m.div className='rounded-lg border bg-white/90 transition-all duration-300 backdrop-blur-sm  text-sm shadow-lg  p-3'>
+      <m.div className='rounded-lg  bg-background transition-all duration-300 backdrop-blur-sm  text-sm shadow-lg  p-3'>
         {displayLabel && (
           <div className='mb-2 font-medium text-ink-secondary'>
             {displayLabel}

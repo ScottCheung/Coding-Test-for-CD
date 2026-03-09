@@ -31,7 +31,7 @@ export function TeamPerformanceCard({
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: index * 0.05 }}
-            className='flex items-center gap-2 sm:gap-4 rounded-xl p-2 sm:p-3 transition-colors hover:bg-background'
+            className='flex items-center gap-2 sm:gap-4 rounded-xl p-2 sm:p-3 transition-colors hover:bg-primary/5'
           >
             <div className='flex size-7 sm:size-8 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs sm:text-sm font-bold text-primary'>
               {index + 1}

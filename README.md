@@ -4,6 +4,8 @@
 
 A high-performance AFL (Australian Football League) match dashboard built with Next.js, focused on visualizing match data and comprehensive statistics.
 
+Live Demo: https://coding-test-for-cd.vercel.app/
+
 ## Quick Start
 
 ```bash
