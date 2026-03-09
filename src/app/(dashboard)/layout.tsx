@@ -26,7 +26,7 @@ const MainContent = memo(function MainContent({
   description?: string;
   actions?: React.ReactNode;
   headerChildren?: React.ReactNode;
-  scrollContainerRef: React.RefObject<HTMLElement>;
+  scrollContainerRef: React.RefObject<HTMLElement | null>;
 }) {
   return (
     <main
