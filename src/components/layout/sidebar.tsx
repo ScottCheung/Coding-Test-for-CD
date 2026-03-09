@@ -251,7 +251,7 @@ export const Sidebar = memo(function Sidebar() {
                 >
                   <motion.div
                     layout
-                    layoutId="sidebar-toggle"
+                    layoutId='sidebar-toggle'
                     onClick={toggleSidebar}
                     className='flex size-10 shrink-0 cursor-pointer items-center justify-center rounded-xl bg-primary-gradient text-white transition-transform '
                   >

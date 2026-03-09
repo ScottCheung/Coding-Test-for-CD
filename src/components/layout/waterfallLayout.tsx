@@ -20,6 +20,7 @@ export interface WaterfallLayoutProps {
     | { sm?: number; md?: number; lg?: number; xl?: number };
   padding?: boolean;
   itemScale?: number;
+  disableAnimation?: boolean;
 }
 
 export const WaterfallLayout: React.FC<WaterfallLayoutProps> = ({
@@ -30,17 +31,19 @@ export const WaterfallLayout: React.FC<WaterfallLayoutProps> = ({
   minColumnWidth = { sm: 250, md: 250, lg: 280, xl: 300 },
   padding = false,
   itemScale = 1,
+  disableAnimation = false,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
 
-  // 只需要记录容器的高度来撑开父容器，不需要记录每个 item 的 style
   const [containerHeight, setContainerHeight] = useState(0);
+  const [visibleIndices, setVisibleIndices] = useState<boolean[]>([]);
 
-  // 用于防抖的 timer refs
+  // 【新增】：使用 Set 记录已经触发过动画的索引，使用 useRef 避免引发多余渲染
+  const animatedIndices = useRef<Set<number>>(new Set());
+
   const resizeTimer = useRef<NodeJS.Timeout | null>(null);
 
-  // 计算列配置 (纯函数，提取出来避免依赖)
   const getColumnConfig = useCallback(
     (width: number) => {
       const numericGap =
@@ -72,7 +75,6 @@ export const WaterfallLayout: React.FC<WaterfallLayoutProps> = ({
     [gap, minColumnWidth, padding],
   );
 
-  // 核心布局逻辑 - 直接操作 DOM，不触发 React Render
   const positionItems = useCallback(() => {
     if (!containerRef.current) return;
 
@@ -80,23 +82,16 @@ export const WaterfallLayout: React.FC<WaterfallLayoutProps> = ({
     const { columnCount, numericGap, columnWidth } =
       getColumnConfig(containerWidth);
 
-    // 记录每一列当前的堆叠高度
     const columnHeights = new Array(columnCount).fill(0);
 
-    // 遍历所有子元素 DOM
     itemRefs.current.forEach((item) => {
       if (!item) return;
 
-      // 1. 设置宽度 (必须先设置宽度，否则 offsetHeight 可能不准)
-      // 如果有缩放，实际上我们希望内部渲染的宽度更大，然后缩小放入 columnWidth 的槽位
-      // 比如 slot=200px, scale=0.8 => renderWidth = 250px
       item.style.width = `${columnWidth / itemScale}px`;
 
-      // 2. 找到当前高度最小的那一列
       const minHeight = Math.min(...columnHeights);
       const columnIndex = columnHeights.indexOf(minHeight);
 
-      // 3. 计算坐标
       const x =
         (padding ? numericGap : 0) + columnIndex * (columnWidth + numericGap);
       const y =
@@ -105,37 +100,34 @@ export const WaterfallLayout: React.FC<WaterfallLayoutProps> = ({
         : padding ? numericGap
         : 0);
 
-      // 4. 直接应用样式 (GPU 加速)
-      // 使用 transform 代替 top/left，性能提升关键
       item.style.transform = `translate3d(${x}px, ${y}px, 0) scale(${itemScale})`;
-      item.style.transformOrigin = '0 0'; // 左上角对齐
+      item.style.transformOrigin = '0 0';
       item.style.position = 'absolute';
-      item.style.top = '0'; // 重置 top
-      item.style.left = '0'; // 重置 left
-      // Apply proper transition here to ensure it's set even if re-renders happened differently
-      // Add width to transition to smooth out scale mode changes
-      item.style.transition =
-        'transform 1.2s cubic-bezier(0.22, 1.1, 0.36, 1), width 1.2s cubic-bezier(0.22, 1.1, 0.36, 1), opacity 1.2s ease';
+      item.style.top = '0';
+      item.style.left = '0';
 
-      // 此时 item 已经有了宽度，读取高度 (Layout Thrashing 依然存在但被限制在必要的范围内)
-      // 计算由于缩放而实际占用的高度
+      if (!disableAnimation) {
+        item.style.transition =
+          'transform 1.2s cubic-bezier(0.22, 1.1, 0.36, 1), width 1.2s cubic-bezier(0.22, 1.1, 0.36, 1)';
+      } else {
+        item.style.transition = 'none';
+      }
+
       const currentItemHeight = item.offsetHeight * itemScale;
 
-      // 5. 更新列高
+      if (item.offsetHeight > 0) {
+        item.style.height = `${item.offsetHeight}px`;
+      }
+
       columnHeights[columnIndex] = y + currentItemHeight;
     });
 
-    // 更新容器总高度，这是唯一会触发 Re-render 的地方
-    // 但我们做一个判断，只有高度变化很大时才更新，或者接受这是必要的
     const maxContentHeight =
       Math.max(...columnHeights) + (padding ? numericGap : 0);
     setContainerHeight(maxContentHeight);
-  }, [getColumnConfig, padding, itemScale]);
+  }, [getColumnConfig, padding, itemScale, disableAnimation]);
 
-  // 监听 Resize 和 Children 变化
   useEffect(() => {
-    // 初始化布局
-    // 使用 requestAnimationFrame 确保在下一帧渲染前执行，避免布局闪烁
     const initFrame = requestAnimationFrame(() => {
       positionItems();
     });
@@ -144,21 +136,17 @@ export const WaterfallLayout: React.FC<WaterfallLayoutProps> = ({
       if (resizeTimer.current) clearTimeout(resizeTimer.current);
       resizeTimer.current = setTimeout(() => {
         positionItems();
-      }, 100); // 100ms 防抖，稍微加快响应速度
+      }, 100);
     };
 
     const ro = new ResizeObserver(handleResize);
 
-    // 1. 监听容器宽度变化
     if (containerRef.current) {
       ro.observe(containerRef.current);
     }
 
-    // 2. 监听所有子元素的高度变化 (关键优化)
     itemRefs.current.forEach((item) => {
-      if (item) {
-        ro.observe(item);
-      }
+      if (item) ro.observe(item);
     });
 
     const images = containerRef.current?.getElementsByTagName('img');
@@ -180,7 +168,51 @@ export const WaterfallLayout: React.FC<WaterfallLayoutProps> = ({
         );
       }
     };
-  }, [children, positionItems]); // 依赖 children 变化重新布局
+  }, [children, positionItems]);
+
+  useEffect(() => {
+    setVisibleIndices((prev) => {
+      const next = [...prev];
+      for (let i = 0; i < React.Children.count(children); i++) {
+        if (next[i] === undefined) next[i] = true;
+      }
+      return next;
+    });
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        setVisibleIndices((prev) => {
+          const next = [...prev];
+          let changed = false;
+          entries.forEach((entry) => {
+            const index = Number(entry.target.getAttribute('data-index'));
+            const isVisible = entry.isIntersecting;
+
+            // 【新增】：一旦元素进入视口，就将其标记为“已动画过”
+            if (isVisible) {
+              animatedIndices.current.add(index);
+            }
+
+            if (next[index] !== isVisible) {
+              next[index] = isVisible;
+              changed = true;
+            }
+          });
+          return changed ? next : prev;
+        });
+      },
+      { rootMargin: '1000px 0px' },
+    );
+
+    itemRefs.current.forEach((item, index) => {
+      if (item) {
+        item.setAttribute('data-index', String(index));
+        io.observe(item);
+      }
+    });
+
+    return () => io.disconnect();
+  }, [children]);
 
   return (
     <div
@@ -188,42 +220,65 @@ export const WaterfallLayout: React.FC<WaterfallLayoutProps> = ({
       className={cn('w-full relative', className)}
       style={{
         height: containerHeight,
-        transition: 'height 1.2s cubic-bezier(0.22, 1.05, 0.36, 1)',
+        transition:
+          disableAnimation ? 'none' : (
+            'height 1.2s cubic-bezier(0.22, 1.05, 0.36, 1)'
+          ),
       }}
     >
       {React.Children.map(children, (child, index) => {
+        const isVisible = visibleIndices[index] ?? true;
+        // 【新增】：检查该索引是否已经播放过动画
+        const hasAnimated = animatedIndices.current.has(index);
+
+        if (disableAnimation) {
+          return (
+            <div
+              ref={(el) => {
+                itemRefs.current[index] = el;
+              }}
+              className={cn('absolute left-0 top-0', itemClassName)}
+            >
+              {isVisible && child}
+            </div>
+          );
+        }
+
         return (
           <div
             ref={(el) => {
               itemRefs.current[index] = el;
             }}
-            className={cn('absolute relative left-0 top-0', itemClassName)}
+            className={cn('absolute left-0 top-0', itemClassName)}
           >
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{
-                duration: 1,
-                delay: 0.44 + 0.04 * (index % 30),
-                ease: [0.22, 1.1, 0.36, 1],
-              }}
-              className='z-10
-                            '
-            >
-              {child}
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 1, scale: 1 }}
-              animate={{ opacity: 0, scale: 0.95 }}
-              transition={{
-                duration: 3,
-                delay: 0.44 + 0.04 * (index % 30),
-                ease: [0.22, 1.1, 0.36, 1],
-              }}
-              className='absolute top-0 left-0 w-full h-full rounded-card bg-panel -z-10'
-            >
-              {' '}
-            </motion.div>
+            {isVisible && (
+              <>
+                <motion.div
+                  // 【核心】：如果已经动画过，设为 false 直接跳过初始状态，处于 animate 最终状态
+                  initial={hasAnimated ? false : { opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{
+                    duration: 1.2,
+                    // 首次加载保留你原本优雅的交错延迟，后续重新渲染直接无延迟出现
+                    delay: hasAnimated ? 0 : 0.44 + 0.04 * (index % 30),
+                    ease: [0.22, 1.1, 0.36, 1],
+                  }}
+                  className='z-10'
+                >
+                  {child}
+                </motion.div>
+                <motion.div
+                  initial={hasAnimated ? false : { opacity: 1, scale: 1 }}
+                  animate={{ opacity: 0, scale: 0.95 }}
+                  transition={{
+                    duration: 3,
+                    delay: hasAnimated ? 0 : 0.44 + 0.04 * (index % 30),
+                    ease: [0.22, 1.1, 0.36, 1],
+                  }}
+                  className='absolute top-0 left-0 w-full h-full rounded-card bg-panel -z-10'
+                />
+              </>
+            )}
           </div>
         );
       })}
