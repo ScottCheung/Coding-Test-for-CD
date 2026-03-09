@@ -150,6 +150,7 @@ export const Sidebar = memo(function Sidebar() {
               >
                 <Link
                   href={item.href}
+                  scroll={true}
                   className={cn(
                     'group flex items-center gap-3 rounded-full transition-all',
                     isCollapsed ? 'justify-center p-2.5' : 'px-4 py-3.5',

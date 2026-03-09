@@ -6,6 +6,7 @@ import { Sidebar } from '@/components/layout/sidebar';
 import { GlobalDrawer } from '@/components/layout/global-drawer';
 import { PageHeader } from '@/components/layout/page-header';
 import { useHeaderStore } from '@/lib/store/header-store';
+import { usePathname } from 'next/navigation';
 import React from 'react';
 
 export default function DashboardLayout({
@@ -20,6 +21,14 @@ export default function DashboardLayout({
     children: headerChildren,
   } = useHeaderStore();
   const scrollContainerRef = React.useRef<HTMLElement>(null);
+  const pathname = usePathname();
+
+  // 路由切换时滚动到顶部
+  React.useEffect(() => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTop = 0;
+    }
+  }, [pathname]);
 
   return (
     <div className='flex h-screen w-screen flex-row overflow-hidden bg-background'>

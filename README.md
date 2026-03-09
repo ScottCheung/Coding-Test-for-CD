@@ -1,36 +1,83 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+<!-- @format -->
 
-## Getting Started
+# AFL Fixture Dashboard Coding Test
 
-First, run the development server:
+A high-performance AFL (Australian Football League) match dashboard built with Next.js, focused on visualizing match data and comprehensive statistics.
+
+## Quick Start
 
 ```bash
+# Install dependencies
+npm install
+# or
+pnpm install
+
+# Development mode
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+
+# Build for production
+npm run build
+
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Then, navigate to `http://localhost:3000` to view the application.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Tech Stack
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Key libraries and frameworks utilized:
 
-## Learn More
+- **Next.js 16 (App Router)** - Core framework for robust routing and SSR/SSG.
+- **TanStack Query** - Efficient data fetching, state synchronization, and caching.
+- **Framer Motion** - High-quality declarative animations.
+- **Tailwind CSS 4** - Modern utility-first styling.
+- **Zustand** - Lightweight state management with optimized re-rendering.
+- **React Table** - Powerful, headless table engine for complex data sets.
+- **Recharts** - Composable charting library for data visualization.
+- **dayjs** - Lightweight date and time manipulation.
 
-To learn more about Next.js, take a look at the following resources:
+## Project Structure
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```text
+src/
+├── app/                  # Next.js App Router (File-based routing)
+│   ├── (dashboard)/      # Authenticated/Main dashboard routes
+│   │   ├── afl-fixture/  # Match schedules & fixtures
+│   │   ├── afl-teams/    # Team management & profiles
+│   │   └── dashboard/    # Data visualization overview
+├── components/           # Component library
+│   ├── custom/           # Business-specific logic components
+│   ├── UI/               # Generic, reusable UI atoms
+│   ├── layout/           # Structural layout components
+│   └── animation/        # Framer Motion wrappers
+├── hooks/                # Custom React hooks
+├── lib/                  # Utilities, API clients, and Store
+└── types/                # Centralized TypeScript definitions
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
 
-## Deploy on Vercel
+## Optimizations
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Performance
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Granular Memoization**: Implemented `useCallback` for stable function references, `useMemo` for expensive computations, and `React.memo` for component-level caching to eliminate redundant re-renders.
+- **Virtualized Waterfall Layout**: Developed a custom `WaterfallLayout` component. By implementing virtualization (rendering only items within the viewport), it maintains 60FPS even with large datasets, solving the layout shift and lag issues found in early versions.
+- **Data Caching**: Leveraged TanStack Query to prevent duplicate network requests and ensure instant "stale-while-revalidate" experiences.
+- **Debounced Interactions**: Applied debouncing to search and filter inputs to minimize unnecessary computational load during rapid user input.
+- **Fine-tuned Loading Strategy**: Optimized Image delivery using `lazy` loading for off-screen assets and `eager` loading for LCP (Largest Contentful Paint) elements.
+- **Hardware-Accelerated Animations**: Utilized `IntersectionObserver` to trigger animations only when elements enter the viewport, preventing background CPU overhead.
+
+### User Experience (UX)
+
+- **Skeleton Screens**: Used meaningful skeleton states during data fetching to eliminate "blank page" flickers.
+- **Resilient Error Handling**: Integrated `ErrorBoundary` and specific error states to ensure a graceful fallback when APIs fail.
+- **Responsive Design**: Fully optimized for mobile, tablet, and desktop viewing.
+- **Advanced Filtering**: Real-time filtering by team, venue, and match status.
+- **Multi-view Support**: Users can toggle between List and Grid views based on preference.
+- **Theme & Color Customization**: Supports Dark/Light modes with 5 distinct color schemes, offering 10 unique visual combinations.
+
+## Architectural Details
+
+- **Type Safety**: Full TypeScript implementation to catch bugs during development and improve IDE intellisense.
+- **Component Promotion Strategy**: Components follow a "Local-First" approach. New components start in page-specific folders; if a component is needed elsewhere, it is "promoted" to the global `components/UI` or `custom` folders. This prevents "folder bloat" and keeps the architecture scalable as the project grows.
+- **State Management**: Zustand is used for global UI state to ensure high performance and avoid the boilerplate/re-render pitfalls of Redux or Context API.
+- **Unified API Layer**: All data interactions are encapsulated in `src/lib/afl-api.ts` for better maintainability.
