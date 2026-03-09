@@ -52,7 +52,7 @@ export function TeamDisplay({
         <div
           className={cn(
             'relative ',
-            isWaterfallVertical ? 'size-16' : 'size-14 sm:size-16',
+            isWaterfallVertical ? 'size-15' : 'size-14 lg:size-10',
           )}
         >
           {isWinner && (
@@ -70,8 +70,8 @@ export function TeamDisplay({
           <Image
             src={`https://react-code-test.s3.ap-southeast-2.amazonaws.com/logos/${code}.svg`}
             alt={`${name} logo`}
-            width={64}
-            height={64}
+            width={isWaterfallVertical ? 80 : 40}
+            height={isWaterfallVertical ? 80 : 40}
             className='size-full object-contain'
             unoptimized
             loading='lazy'

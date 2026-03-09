@@ -41,8 +41,12 @@ function formatDateTime(utcString: string, timeZone?: string) {
       timeZone: timeZone || undefined,
     };
 
-    const formattedDate = new Intl.DateTimeFormat('en-AU', dateOptions).format(date);
-    const formattedTime = new Intl.DateTimeFormat('en-AU', timeOptions).format(date);
+    const formattedDate = new Intl.DateTimeFormat('en-AU', dateOptions).format(
+      date,
+    );
+    const formattedTime = new Intl.DateTimeFormat('en-AU', timeOptions).format(
+      date,
+    );
 
     return { formattedDate, formattedTime };
   } catch (error) {
