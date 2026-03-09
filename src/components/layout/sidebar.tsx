@@ -193,48 +193,52 @@ export const Sidebar = memo(function Sidebar() {
                 variants={{
                   hidden: {
                     opacity: 0,
-                    height: 0,
-                    marginBottom: 0,
-                    paddingTop: 0,
-                    borderTopWidth: 0,
+                    width: 0,
+                    // marginBottom: 0,
+                    // paddingTop: 0,
+                    // borderTopWidth: 0,
                   },
                   visible: {
                     opacity: 1,
-                    height: 'auto',
-                    marginBottom: 24,
-                    paddingTop: 24,
-                    borderTopWidth: 1,
+                    width: 'auto',
+                    // marginBottom: 24,
+                    // paddingTop: 24,
+                    // borderTopWidth: 1,
                   },
                   exit: {
                     opacity: 0,
-                    height: 0,
-                    marginBottom: 0,
-                    paddingTop: 0,
-                    borderTopWidth: 0,
+                    width: 0,
+                    // marginBottom: 0,
+                    // paddingTop: 0,
+                    // borderTopWidth: 0,
                   },
                 }}
                 initial='hidden'
                 animate='visible'
                 exit='exit'
-                className='flex flex-col gap-4 border-primary/10 overflow-hidden'
               >
-                <div className='flex items-center justify-between'>
-                  <p className='text-xs font-medium text-ink-secondary '>
-                    View
-                  </p>
-                  <ListGridToggle />
-                </div>
-                <div className='flex items-center justify-between'>
-                  <p className='text-xs font-medium text-ink-secondary '>
-                    Theme
-                  </p>
-                  <ModeToggle />
-                </div>
-                <div className='flex items-center justify-between'>
-                  <p className='text-xs font-medium text-ink-secondary '>
-                    Color
-                  </p>
-                  <ColorPicker />
+                <div
+                  className='flex flex-col gap-4 border-primary/10
+                overflow-hidden'
+                >
+                  <div className='flex items-center justify-between'>
+                    <p className='text-xs font-medium text-ink-secondary '>
+                      View
+                    </p>
+                    <ListGridToggle />
+                  </div>
+                  <div className='flex items-center justify-between'>
+                    <p className='text-xs font-medium text-ink-secondary '>
+                      Theme
+                    </p>
+                    <ModeToggle />
+                  </div>
+                  <div className='flex items-center justify-between'>
+                    <p className='text-xs font-medium text-ink-secondary '>
+                      Color
+                    </p>
+                    <ColorPicker />
+                  </div>
                 </div>
               </motion.div>
             )}
@@ -273,7 +277,7 @@ export const Sidebar = memo(function Sidebar() {
       {/* Mobile Menu Button */}
       <button
         onClick={() => setIsMobileOpen(true)}
-        className='fixed top-1/2 -left-4 z-50 flex lg:hidden items-center justify-center size-12 rounded-xl bg-panel border border-black/5 dark:border-white/5 shadow-lg text-ink-primary hover:bg-primary hover:text-white transition-all'
+        className='fixed bottom-1/4 -left-4 z-50 flex lg:hidden items-center justify-center size-12 rounded-xl bg-panel border border-black/5 dark:border-white/5 shadow-lg text-ink-primary hover:bg-primary hover:text-white transition-all'
         aria-label='Open menu'
       >
         <PanelRight className='size-6' />

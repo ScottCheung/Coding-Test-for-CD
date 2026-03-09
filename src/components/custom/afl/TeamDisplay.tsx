@@ -3,6 +3,7 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { Small } from '@/components/UI/text/typography';
 
@@ -56,13 +57,23 @@ export function TeamDisplay({
         >
           {isWinner && (
             <div className='group-hover:opacity-100 max-size-20 opacity-0 absolute  right-1 top-0  transition-all duration-700 z-20 group-hover:-top-[30px] animate-bounce'>
-              <img src='/crown.png' alt='crown' />
+              <Image 
+                src='/crown.png' 
+                alt='crown'
+                width={80}
+                height={80}
+                className='size-full object-contain'
+              />
             </div>
           )}
-          <img
+          <Image
             src={`https://react-code-test.s3.ap-southeast-2.amazonaws.com/logos/${code}.svg`}
             alt={`${name} logo`}
+            width={64}
+            height={64}
             className='size-full object-contain'
+            unoptimized
+            loading='lazy'
             onError={(e) => {
               const target = e.currentTarget as HTMLImageElement;
               target.style.display = 'none';

@@ -334,6 +334,25 @@ export default function AflFixturePage() {
   const filteredMatches = useMemo(() => {
     let result = allMatches;
 
+    // Apply search filter first
+    if (debouncedSearch) {
+      const query = debouncedSearch.toLowerCase();
+      result = result.filter((m) => {
+        const homeName = m.squads?.home?.name?.toLowerCase() || '';
+        const awayName = m.squads?.away?.name?.toLowerCase() || '';
+        const venueName = m.venue?.name?.toLowerCase() || '';
+        const roundCode = m.roundCode?.toLowerCase() || '';
+
+        return (
+          homeName.includes(query) ||
+          awayName.includes(query) ||
+          venueName.includes(query) ||
+          roundCode.includes(query)
+        );
+      });
+    }
+
+    // Apply filter selections
     result = result.filter((m) => {
       const matchRound =
         selectedRounds.length === 0 || selectedRounds.includes(m.roundCode);
@@ -347,6 +366,7 @@ export default function AflFixturePage() {
       return matchRound && matchVenue && matchTeam;
     });
 
+    // Apply sorting
     if (sortConfig) {
       result = [...result].sort((a, b) => {
         if (sortConfig.key === 'date') {
@@ -373,10 +393,10 @@ export default function AflFixturePage() {
     return result;
   }, [
     allMatches,
+    debouncedSearch,
     selectedRounds,
     selectedVenues,
     selectedTeams,
-    debouncedSearch,
     sortConfig,
   ]);
 
@@ -390,11 +410,11 @@ export default function AflFixturePage() {
         </div>
 
         {/* Skeleton Grid */}
-        <WaterfallLayout minColumnWidth={350} disableAnimation>
+        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[30px]'>
           {Array.from({ length: 12 }).map((_, i) => (
-            <MatchCardSkeleton key={i} layout={i % 3 === 0} />
+            <MatchCardSkeleton key={i} layout={false} />
           ))}
-        </WaterfallLayout>
+        </div>
       </div>
     );
   }
