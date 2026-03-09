@@ -202,7 +202,7 @@ export const WaterfallLayout: React.FC<WaterfallLayoutProps> = ({
           return changed ? next : prev;
         });
       },
-      { rootMargin: '150% 0%' },
+      { rootMargin: '150% 0px' },
     );
 
     itemRefs.current.forEach((item, index) => {

@@ -57,10 +57,6 @@ import { div } from 'framer-motion/client';
 
 export const Sidebar = memo(function Sidebar() {
   const pathname = usePathname();
-  // 认证功能已禁用
-  // const { user, fetchMe, logout } = useAuthStore();
-  const user = null; // 临时占位
-  const logout = () => {}; // 临时占位
   const isCollapsed = useLayoutStore((state) => state.isSidebarCollapsed);
   const { toggleSidebar } = useLayoutStore((state) => state.actions);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
@@ -69,10 +65,6 @@ export const Sidebar = memo(function Sidebar() {
 
   useEffect(() => {
     setMounted(true);
-    // 认证功能已禁用 - 不再调用 fetchMe
-    // if (!user) {
-    //   fetchMe();
-    // }
   }, []);
 
   // Close mobile menu when route changes
@@ -112,7 +104,7 @@ export const Sidebar = memo(function Sidebar() {
 
   const SidebarContent = () => (
     <>
-      <div className='flex flex-col h-screen justify-between gap-4'>
+      <div className='flex flex-col  lg:h-screen justify-between gap-4'>
         {/* Brand */}
         <div
           className={cn(

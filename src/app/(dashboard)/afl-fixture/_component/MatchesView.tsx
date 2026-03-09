@@ -53,17 +53,30 @@ export function MatchesView({
 
   return (
     <WaterfallLayout minColumnWidth={350}>
-      {matches.map((match) => {
-        const homeScore = match.squads?.home?.score?.points ?? 0;
-        const awayScore = match.squads?.away?.score?.points ?? 0;
-        const scoreString = `${homeScore}:${awayScore}`;
-        const layout = scoreString.length > 5;
+      <div className='hidden md:block'>
+        {matches?.map?.((match, index) => {
+          if (!match) return null;
+          const homeScore = match.squads?.home?.score?.points ?? 0;
+          const awayScore = match.squads?.away?.score?.points ?? 0;
+          const scoreString = `${homeScore}:${awayScore}`;
+          const layout = scoreString.length > 5;
+          return (
+            <MatchCard
+              key={`${match.roundCode}-${match.id}-${index}`}
+              match={match}
+              visibility={columnVisibility}
+              layout={layout}
+            />
+          );
+        })}
+      </div>
+      {matches?.map?.((match, index) => {
         return (
           <MatchCard
-            key={`${match.id || match.roundCode}`}
+            key={`${match.roundCode}-${match.id}-${index}`}
             match={match}
             visibility={columnVisibility}
-            layout={layout}
+            layout={false}
           />
         );
       })}

@@ -33,18 +33,30 @@ export const MatchCard = memo(function MatchCard({
   const home = squads?.home;
   const away = squads?.away;
   const isComplete = status?.code === 'COMP';
+  const homeScorePoints = home?.score?.points ?? 0;
+  const awayScorePoints = away?.score?.points ?? 0;
   const homeWin =
-    isComplete && home && away && home.score.points > away.score.points;
+    isComplete && home && away && homeScorePoints > awayScorePoints;
   const awayWin =
-    isComplete && home && away && away.score.points > home.score.points;
+    isComplete && home && away && awayScorePoints > homeScorePoints;
 
   // Time handling
-  const localTime =
-    date?.utcMatchStart ?
-      venue?.timeZone ?
-        dayjs(date.utcMatchStart).tz(venue.timeZone)
-      : dayjs(date.utcMatchStart)
-    : null;
+  let localTime = null;
+  if (date?.utcMatchStart) {
+    localTime = dayjs(date.utcMatchStart);
+    if (venue?.timeZone) {
+      try {
+        // iOS Safari and other mobile browsers might throw RangeError if timezone string is unsupported
+        localTime = dayjs(date.utcMatchStart).tz(venue.timeZone);
+      } catch (e) {
+        console.warn(
+          'Unsupported timezone string on this browser:',
+          venue.timeZone,
+        );
+        localTime = dayjs(date.utcMatchStart);
+      }
+    }
+  }
 
   const formattedDate =
     localTime ? localTime.format('ddd D MMM YYYY') : 'Date TBD';
@@ -61,6 +73,7 @@ export const MatchCard = memo(function MatchCard({
 
   return (
     <article
+      suppressHydrationWarning
       className={cn(
         'group relative flex flex-col overflow-hidden rounded-card bg-panel p-card transition-all duration-500 border border-transparent hover:border-primary/50 hover:-translate-y-1.5  ',
         className,
