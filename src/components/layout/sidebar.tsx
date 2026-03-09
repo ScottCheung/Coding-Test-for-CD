@@ -57,15 +57,10 @@ import { div } from 'framer-motion/client';
 
 export const Sidebar = memo(function Sidebar() {
   const pathname = usePathname();
+  // 优化 Zustand selector - 只订阅需要的状态
   const isCollapsed = useLayoutStore((state) => state.isSidebarCollapsed);
-  const { toggleSidebar } = useLayoutStore((state) => state.actions);
+  const toggleSidebar = useLayoutStore((state) => state.actions.toggleSidebar);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
-
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   // Close mobile menu when route changes
   useEffect(() => {
@@ -102,7 +97,7 @@ export const Sidebar = memo(function Sidebar() {
     exit: { opacity: 0, x: -10, width: 0, transition: { duration: 0.1 } },
   };
 
-  const SidebarContent = () => (
+  const SidebarContent = memo(() => (
     <>
       <div className='flex flex-col  lg:h-screen justify-between gap-4'>
         {/* Brand */}
@@ -256,6 +251,7 @@ export const Sidebar = memo(function Sidebar() {
                 >
                   <motion.div
                     layout
+                    layoutId="sidebar-toggle"
                     onClick={toggleSidebar}
                     className='flex size-10 shrink-0 cursor-pointer items-center justify-center rounded-xl bg-primary-gradient text-white transition-transform '
                   >
@@ -268,7 +264,7 @@ export const Sidebar = memo(function Sidebar() {
         </div>
       </div>
     </>
-  );
+  ));
 
   return (
     <>
@@ -321,7 +317,6 @@ export const Sidebar = memo(function Sidebar() {
       {/* Desktop Sidebar */}
       <motion.aside
         layout
-        initial={{ width: 288 }}
         animate={{ width: isCollapsed ? 80 : 288 }}
         transition={springTransition}
         className={cn(
