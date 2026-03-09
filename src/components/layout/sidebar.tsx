@@ -32,6 +32,7 @@ import { ListGridToggle } from '@/components/global/list-grid-toggle';
 import { ModeToggle } from '@/components/global/mode-toggle';
 import { ColorPicker } from '@/components/global/color-picker';
 import { motion, AnimatePresence } from 'framer-motion';
+import { memo } from 'react';
 
 const navigation = [
   { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
@@ -53,7 +54,7 @@ import {
 import { H4 } from '@/components/UI/text/typography';
 import { div } from 'framer-motion/client';
 
-export function Sidebar() {
+export const Sidebar = memo(function Sidebar() {
   const pathname = usePathname();
   const { user, fetchMe, logout } = useAuthStore();
   const isCollapsed = useLayoutStore((state) => state.isSidebarCollapsed);
@@ -330,4 +331,4 @@ export function Sidebar() {
       </motion.aside>
     </>
   );
-}
+});
