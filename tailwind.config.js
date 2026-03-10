@@ -5,7 +5,7 @@
 
 module.exports = {
   content: ['./src/**/*.{js,ts,jsx,tsx,mdx}'],
-  darkMode: 'selector', // Enable class-based dark mode with .dark class
+  darkMode: 'selector',
   theme: {
     extend: {
       colors: {

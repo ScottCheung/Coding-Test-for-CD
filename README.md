@@ -37,6 +37,23 @@ Key libraries and frameworks utilized:
 - **Recharts** - Composable charting library for data visualization.
 - **dayjs** - Lightweight date and time manipulation.
 
+## Performance Result
+
+![Performance 1](./public/performance1.png)
+![Performance 2](./public/performance2.png)
+
+- Average Score > 95
+
+![Performance Feature](./public/Performance_feature.png)
+![Local Metrics](./public/Local%20metrics.png)
+￼
+
+- 1000ms/60fps = 16.67ms/fps -
+
+- 48 / 16.67  = 2.879 -
+
+- ONLY  2.8 fps time period finish calculation and render to Next Paint -
+
 ## Project Structure
 
 ```text
